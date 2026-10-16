@@ -1,5 +1,14 @@
 package com.grupo3.tp_hito_2.repositories;
 
-public interface IUnidadDeVenta {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.Optional;
+
+import com.grupo3.tp_hito_2.entities.UnidadDeVenta;
+
+@Repository("unidadDeVentaRepository")
+public interface IUnidadDeVentaRepository extends JpaRepository<UnidadDeVenta, Long> {
+
+    public abstract Optional<UnidadDeVenta> findByCodigoUnico(String codigoUnico);
 
 }

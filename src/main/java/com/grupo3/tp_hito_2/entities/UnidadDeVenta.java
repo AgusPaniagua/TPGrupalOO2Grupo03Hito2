@@ -3,6 +3,7 @@ package com.grupo3.tp_hito_2.entities;
 import java.util.Set;
 import java.util.HashSet;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -35,6 +36,7 @@ public class UnidadDeVenta {
     @ToString.Include
     private double superficie;
     
+    @Column(unique = true, nullable = false)
     @ToString.Include
     private String codigoUnico;
 
