@@ -11,12 +11,14 @@ public class UnidadDeVentaDTO {
     private double superficie;
     private String codigoUnico;
     private Long idFestival;
+    private Long idResponsable;
 
-    public UnidadDeVentaDTO(Long idUnidadDeVenta, String nombreComercial, double superficie, String codigoUnico, Long idFestival){
+    public UnidadDeVentaDTO(Long idUnidadDeVenta, String nombreComercial, double superficie, String codigoUnico, Long idFestival,Long idResponsable){
         this.setIdUnidadDeVenta(idUnidadDeVenta);
         this.nombreComercial=nombreComercial;
         this.superficie=superficie;
         this.codigoUnico=codigoUnico;
         this.idFestival=idFestival;
+        this.idResponsable=idResponsable;
     }
 }

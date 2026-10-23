@@ -15,7 +15,7 @@ public class PedidoDTO {
     private long idPedido;
     private LocalDate fechaDeTransaccion;
     private UnidadDeVentaDTO unidadDeVenta;
-    private List<List<PedidoPlatoDTO>> pedidoPlato;
+    private List<PedidoPlatoDTO> pedidoPlato;
 
     public PedidoDTO (long idPedido,LocalDate fechaDeTransaccion,UnidadDeVentaDTO unidadDeVenta
             , List<PedidoPlatoDTO> pedidoPlatoParametro){

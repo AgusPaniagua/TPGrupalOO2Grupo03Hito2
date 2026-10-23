@@ -28,7 +28,10 @@ public class UserService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		com.grupo3.tp_hito_2.entities.User user = userRepository.findByUsernameAndFetchUserRolesEagerly(username);
-		return buildUser(user, buildGrantedAuthorities(user.getUserRoles()));
+		if(user == null){
+			throw new UsernameNotFoundException("Usuario no encontrado: " + username);
+		}
+		return buildUser(user, buildGrantedAuthorities(user.getUserRoles()));	
 	}
 
 	private User buildUser(com.grupo3.tp_hito_2.entities.User user, List<GrantedAuthority> grantedAuthorities) {
@@ -40,7 +43,7 @@ public class UserService implements UserDetailsService{
 	private List<GrantedAuthority> buildGrantedAuthorities(Set<UserRole> userRoles) {
 		Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 		for(UserRole userRole: userRoles) {
-			grantedAuthorities.add(new SimpleGrantedAuthority(userRole.getRole()));
+			grantedAuthorities.add(new SimpleGrantedAuthority("ROLE_" + userRole.getRole()));
 		}
 		return new ArrayList<>(grantedAuthorities);
 	}
