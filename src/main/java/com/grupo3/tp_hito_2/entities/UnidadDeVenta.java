@@ -50,10 +50,15 @@ public class UnidadDeVenta {
     @OneToMany(mappedBy = "unidadDeVenta", cascade = CascadeType.ALL)
     private Set<Staff> personalACargo = new HashSet<>();
 
-    public UnidadDeVenta(String nombreComercial, double superficie, String codigoUnico, Festival festival){
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "responsable_id")
+    private Staff responsable;
+
+    public UnidadDeVenta(String nombreComercial, double superficie, String codigoUnico, Festival festival, Staff responsable){
         this.nombreComercial=nombreComercial;
         this.superficie=superficie;
         this.codigoUnico=codigoUnico;
         this.festival=festival;
+        this.responsable=responsable;
     }
 }

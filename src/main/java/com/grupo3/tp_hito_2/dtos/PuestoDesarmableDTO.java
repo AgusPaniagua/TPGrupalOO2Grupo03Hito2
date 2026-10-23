@@ -9,8 +9,8 @@ public class PuestoDesarmableDTO extends UnidadDeVentaDTO{
     private int cantidadDeCarpas;
     private int tiempo;
 
-    public PuestoDesarmableDTO(Long id, String nombreComercial, double superficie, String codigoUnico, Long idFestival,int cantidadDeCarpas, int tiempo){
-        super(id,nombreComercial,superficie,codigoUnico,idFestival);
+    public PuestoDesarmableDTO(Long id, String nombreComercial, double superficie, String codigoUnico, Long idFestival, Long idResponsable,int cantidadDeCarpas, int tiempo){
+        super(id,nombreComercial,superficie,codigoUnico,idFestival,idResponsable);
         this.cantidadDeCarpas=cantidadDeCarpas;
         this.tiempo=tiempo;
     }

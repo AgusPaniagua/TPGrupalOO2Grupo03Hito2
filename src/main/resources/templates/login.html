@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+<body>
+    <nav th:replace="~{layout :: navbarPublico}"></nav>
+
+    <main class="container">
+        <div class="login-container">
+            <div class="card login-card">
+                <div class="card-body">
+                    <div class="login-header">
+                        <h3>Iniciar sesión</h3>
+                    </div>
+
+                    <div class="alert alert-danger" th:if="${param.error}">
+                        Usuario o contraseña incorrectos.
+                    </div>
+
+                    <form th:action="@{/loginprocess}" method="post">
+                        <div class="form-group">
+                            <label for="username">Usuario</label>
+                            <input type="text" class="form-control" id="username"
+                                   name="username" required autofocus/>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Contraseña</label>
+                            <input type="password" class="form-control" id="password"
+                                   name="password" required/>
+                        </div>
+                        <button type="submit" class="btn btn-success btn-block">Entrar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{layout :: footer}"></footer>
+    <div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>

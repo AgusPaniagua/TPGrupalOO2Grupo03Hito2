@@ -19,8 +19,8 @@ public class FoodTruck extends UnidadDeVenta {
     @ToString.Include
     private boolean conexionElectrica;
 
-    public FoodTruck(String nombreComercial, double superficie, String codigoUnico, Festival festival, String patente, boolean conexionElectrica){
-        super(nombreComercial, superficie, codigoUnico, festival);
+    public FoodTruck(String nombreComercial, double superficie, String codigoUnico, Festival festival,Staff responsable, String patente, boolean conexionElectrica){
+        super(nombreComercial, superficie, codigoUnico, festival,responsable);
         this.patente=patente;
         this.conexionElectrica=conexionElectrica;
     }

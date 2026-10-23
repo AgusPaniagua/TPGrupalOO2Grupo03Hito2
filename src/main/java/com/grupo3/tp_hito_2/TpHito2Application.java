@@ -8,6 +8,7 @@ public class TpHito2Application {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TpHito2Application.class, args);
+		
 	}
 
 }

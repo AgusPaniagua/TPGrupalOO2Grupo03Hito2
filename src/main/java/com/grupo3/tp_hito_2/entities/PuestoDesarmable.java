@@ -17,8 +17,8 @@ public class PuestoDesarmable extends UnidadDeVenta{
     @ToString.Include
     private int tiempo;
 
-    public PuestoDesarmable(String nombreComercial, double superficie, String codigoUnico, Festival festival, int cantidadDeCarpas, int tiempo){
-        super(nombreComercial, superficie, codigoUnico, festival);
+    public PuestoDesarmable(String nombreComercial, double superficie, String codigoUnico, Festival festival, Staff responsable, int cantidadDeCarpas, int tiempo){
+        super(nombreComercial, superficie, codigoUnico, festival,responsable);
         this.cantidadDeCarpas=cantidadDeCarpas;
         this.tiempo=tiempo;
     }
