@@ -21,8 +21,8 @@ public class Cocinero extends Staff {
 
     public Cocinero(String nombre, String apellido, int dni, LocalDate fechaDeNacimiento,
                     LocalDate fechaDeIngreso, double sueldoBase, UnidadDeVenta unidadDeVenta,
-                    String especialidad, int plusFijo) {
-        super(nombre, apellido, dni, fechaDeNacimiento, fechaDeIngreso, sueldoBase, unidadDeVenta);
+                    User user,String especialidad, int plusFijo) {
+        super(nombre, apellido, dni, fechaDeNacimiento, fechaDeIngreso, sueldoBase, unidadDeVenta,user);
         this.especialidad = especialidad;
         this.plusFijo = plusFijo;
     }

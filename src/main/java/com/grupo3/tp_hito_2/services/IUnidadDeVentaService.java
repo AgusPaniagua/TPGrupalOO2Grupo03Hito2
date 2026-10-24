@@ -3,6 +3,7 @@ package com.grupo3.tp_hito_2.services;
 import java.util.List;
 import java.util.Optional;
 
+import com.grupo3.tp_hito_2.dtos.RegistroUnidadDTO;
 import com.grupo3.tp_hito_2.dtos.UnidadDeVentaDTO;
 import com.grupo3.tp_hito_2.entities.UnidadDeVenta;
 public interface IUnidadDeVentaService {
@@ -18,4 +19,6 @@ public interface IUnidadDeVentaService {
     boolean remove(Long id);
 
     UnidadDeVentaDTO convertirADTO(UnidadDeVenta unidadDeVenta);
+
+    UnidadDeVenta registrarConResponsable(RegistroUnidadDTO dto);
 } 

@@ -13,10 +13,12 @@ import jakarta.persistence.Inheritance;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import jakarta.persistence.CascadeType;
 
 @Entity
 @Getter @Setter @NoArgsConstructor
@@ -51,8 +53,12 @@ public class Staff {
     @JoinColumn(name = "unidad_de_venta_id")
     private UnidadDeVenta unidadDeVenta;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     public Staff(String nombre, String apellido, int dni, LocalDate fechaDeNacimiento,
-                 LocalDate fechaDeIngreso, double sueldoBase, UnidadDeVenta unidadDeVenta) {
+                 LocalDate fechaDeIngreso, double sueldoBase, UnidadDeVenta unidadDeVenta, User user) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
@@ -60,6 +66,10 @@ public class Staff {
         this.fechaDeIngreso = fechaDeIngreso;
         this.sueldoBase = sueldoBase;
         this.unidadDeVenta = unidadDeVenta;
+        if (user == null) {
+            throw new IllegalArgumentException("El miembro del staff responsable debe tener un usuario y contraseña asignados.");
+        }
+        this.user = user;
     }
 
     // La antigüedad (en años) se calcula a partir de la fecha de ingreso, no se guarda en la base.
