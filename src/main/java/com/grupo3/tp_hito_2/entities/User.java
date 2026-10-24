@@ -55,4 +55,12 @@ public class User {
 		this.enabled = enabled;
 		this.userRoles = userRoles;
 	}
+
+	public User(String username, String password, UserRole rol) {
+        this.username = username;
+        this.password = password;
+        this.enabled = true;
+        this.userRoles = new HashSet<>();
+        this.userRoles.add(rol);
+	}
 }

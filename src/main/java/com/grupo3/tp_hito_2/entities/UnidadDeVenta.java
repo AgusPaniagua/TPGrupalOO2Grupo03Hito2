@@ -50,13 +50,19 @@ public class UnidadDeVenta {
     @OneToMany(mappedBy = "unidadDeVenta", cascade = CascadeType.ALL)
     private Set<Staff> personalACargo = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "responsable_id")
     private Staff responsable;
 
     public UnidadDeVenta(String nombreComercial, double superficie, String codigoUnico, Festival festival, Staff responsable){
         this.nombreComercial=nombreComercial;
         this.superficie=superficie;
+        if(codigoUnico == null){
+            throw new IllegalArgumentException("El código no puede ser nulo.");
+        }
+        if(codigoUnico.length()!=10){
+            throw new IllegalArgumentException("El código debe tener exactamente 10 caracteres.");
+        }
         this.codigoUnico=codigoUnico;
         this.festival=festival;
         this.responsable=responsable;
