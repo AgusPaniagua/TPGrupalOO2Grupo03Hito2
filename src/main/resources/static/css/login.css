@@ -1,0 +1,128 @@
+html, body {
+    height: 100%;
+}
+
+body.login-body {
+    background-color: #000;
+    margin: 0;
+}
+
+/* Centra el recuadro en la pantalla */
+.login-wrapper {
+    height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    align-items: stretch;      /* el recuadro llena todo el alto */
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+/* Recuadro con la imagen: de arriba a abajo, centrado a lo ancho */
+.login-stage {
+    position: relative;
+    width: 90vw;
+    max-width: 900px;
+    height: 100vh;
+    max-height: none;
+    border-radius: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Imagen difuminada (el texto no se difumina) */
+.login-stage::before {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    background: url('/assets/fondo.jpg') no-repeat center center;
+    background-size: cover;
+    filter: blur(5px) brightness(0.4);
+    z-index: 0;
+}
+
+/* Contenido centrado */
+.login-content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 360px;
+    padding: 0 1.5rem;
+    text-align: center;
+}
+
+.login-logo {
+    display: block;
+    width: 90px;
+    height: auto;
+    margin: 0 auto 0;
+    filter: brightness(0) invert(1);
+}
+
+.login-title,
+.login-subtitle {
+    color: #fff !important;
+    font-weight: 400;
+    letter-spacing: 3px;
+}
+
+.login-title {
+    font-size: 1.4rem;
+    margin-top: 0.25rem;
+    margin-bottom: 2rem;
+    line-height: 1.2;
+}
+
+.login-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Inputs solo con línea inferior */
+.login-content .form-control-line {
+    background: transparent !important;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 0;
+    color: #fff !important;
+    padding: 0.5rem 0;
+    height: auto;
+    box-shadow: none;
+    outline: none;
+    text-align: left;
+}
+
+.login-content .form-control-line::placeholder {
+    color: rgba(255, 255, 255, 0.75);
+}
+
+.login-content .form-control-line:focus {
+    border-bottom-color: #fff;
+    box-shadow: none;
+    outline: none;
+}
+
+.login-content .form-control-line:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #1a1a1a inset !important;
+    -webkit-text-fill-color: #fff !important;
+}
+
+/* Botón pill */
+.login-content .btn-submit-custom {
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    border-radius: 50rem;
+    padding: 0.6rem 1rem;
+    margin-top: 2rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+}
+
+.login-content .btn-submit-custom:hover {
+    background: #fff;
+    color: #000;
+}

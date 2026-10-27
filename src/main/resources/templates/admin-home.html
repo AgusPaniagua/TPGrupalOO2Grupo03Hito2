@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head}"></head>
+<body class="admin-body">
+    <nav th:replace="~{layout :: navbar}"></nav>
+    
+    <main class="admin-main">
+        <div class="admin-container">
+            
+            <!-- Banner centrado -->
+            <div class="admin-hero">
+                <h1>Panel de Administración</h1>
+                <p class="lead mb-0">
+                    Centro de control de <strong>Epicentro Gourmet</strong><br>
+                    Usuario activo: <span class="badge badge-light" sec:authentication="name">Admin</span>
+                </p>
+                <hr class="my-4">
+                <p class="mb-0">Seleccioná una de las opciones de gestión o reportes oficiales del sistema</p>
+            </div>
+            
+            <!-- Grilla 2x2 -->
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card admin-card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">1. Ver Festivales</h5>
+                            <p class="card-text">Consulta el listado general de festivales registrados en la plataforma.</p>
+                            <a th:href="@{/festivales}" class="btn btn-pill mt-auto">Ver Festivales</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card admin-card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">2. Unidades de Venta</h5>
+                            <p class="card-text">Explora las unidades de venta asociadas a un festival específico.</p>
+                            <a th:href="@{/festivales}" class="btn btn-pill mt-auto">Consultar Unidades</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card admin-card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">3. Ranking por Recaudación</h5>
+                            <p class="card-text">Genera la lista de unidades de un festival ordenada por su recaudación total.</p>
+                            <a th:href="@{/festivales/1/ranking}" class="btn btn-pill mt-auto">Ver Ranking</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card admin-card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">4. Mayores Canon</h5>
+                            <p class="card-text">Obtén el top "x" de unidades que más gastaron en canon para un festival.</p>
+                            <a th:href="@{/festivales/1/reporte-canon(x=5)}" class="btn btn-pill mt-auto">Generar Reporte</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </main>
+    
+    <footer th:replace="~{layout :: footer}"></footer>
+    <div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>

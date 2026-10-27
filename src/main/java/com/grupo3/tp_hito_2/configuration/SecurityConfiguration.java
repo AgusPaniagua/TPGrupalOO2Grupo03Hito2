@@ -34,11 +34,13 @@ public class SecurityConfiguration {
 				.csrf(AbstractHttpConfigurer::disable)
 				.cors(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(auth -> {
-					auth.requestMatchers("/css/*", "/imgs/*", "/js/*", "/vendor/bootstrap/css/*",
+					auth.requestMatchers("/css/*", "/assets/*", "/js/*", "/vendor/bootstrap/css/*",
 							"/vendor/jquery/*", "/vendor/bootstrap/js/*").permitAll();
                     auth.requestMatchers("/","/index","/login").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
+					auth.requestMatchers("/unidades/**").hasRole("ADMIN");
 					auth.requestMatchers("/responsable/**").hasRole("RESPONSABLE");
+					auth.requestMatchers("/unidades/**").hasRole("RESPONSABLE");
 					auth.requestMatchers("/empleado/**").hasRole("EMPLEADO");        
 					auth.anyRequest().authenticated();
 				})

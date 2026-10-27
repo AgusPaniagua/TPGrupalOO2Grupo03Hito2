@@ -1,71 +1,57 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
-    <meta charset="UTF-8"/>
+     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Epicentro Gourmet</title>
-    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}"/>
-    <link rel="stylesheet" th:href="@{/css/modern-business.css}"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    <link rel="stylesheet" th:href="@{/css/admin.css}"/>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400&display=swap" rel="stylesheet"/>
 </head>
 <body>
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="navbar">
-        <div class="container">
-            <a class="navbar-brand" th:href="@{/index}">Epicentro Gourmet</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/index}">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/person}">Personas</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/degrees/}">Titulos</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
-                            <span th:text="${username != null ? username : 'Usuario'}">Usuario</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <form th:action="@{/logout}" method="post">
-                                <button type="submit" class="dropdown-item">Cerrar sesion</button>
-                            </form>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+    <div class="container">
+        <a class="navbar-brand" th:href="@{/home}">
+            <img th:src="@{/assets/logo.svg}" alt="" class="navbar-logo"/>
+            Epicentro Gourmet
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto align-items-lg-center">
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/home}">Inicio</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{/unidades/registro}">Registrar unidad</a>
+                </li>
+
+                <!-- Si NO está logueado -->
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" th:href="@{/login}">Iniciar sesión</a>
+                </li>
+
+                <!-- Si SÍ está logueado -->
+                <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                        <span sec:authentication="name">Usuario</span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <form th:action="@{/logout}" method="post" class="px-3 py-2 mb-0">
+                            <button type="submit" class="btn btn-pill btn-sm btn-block">Cerrar sesión</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
         </div>
-    </nav>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="navbarPublico">
-        <div class="container">
-            <a class="navbar-brand" th:href="@{/index}">Epicentro Gourmet</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarPublico">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarPublico">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/index}">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/unidades/registro}">Registrar unidad</a>
-                    </li>
-                </ul>
-                <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/login}">Iniciar sesión</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+    </div>
+</nav>
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-4" th:fragment="footer">

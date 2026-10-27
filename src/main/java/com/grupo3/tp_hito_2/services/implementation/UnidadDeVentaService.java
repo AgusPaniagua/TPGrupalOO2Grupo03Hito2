@@ -3,8 +3,10 @@ package com.grupo3.tp_hito_2.services.implementation;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.grupo3.tp_hito_2.dtos.FoodTruckDTO;
@@ -20,9 +22,13 @@ import com.grupo3.tp_hito_2.entities.UnidadDeVenta;
 import com.grupo3.tp_hito_2.entities.User;
 import com.grupo3.tp_hito_2.entities.UserRole;
 import com.grupo3.tp_hito_2.repositories.IFestivalRepository;
+import com.grupo3.tp_hito_2.repositories.IStaffRepository;
 import com.grupo3.tp_hito_2.repositories.IUnidadDeVentaRepository;
 import com.grupo3.tp_hito_2.repositories.IUserRepository;
 import com.grupo3.tp_hito_2.services.IUnidadDeVentaService;
+
+import jakarta.transaction.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -37,15 +43,19 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
     private final IUserRepository userRepository;
     
     private final IFestivalRepository festivalRepository;
+
+    private final IStaffRepository staffRepository;
     
     public UnidadDeVentaService(IUnidadDeVentaRepository unidadDeVentaRepository, 
                                 ModelMapper modelMapper,
                                 IUserRepository userRepository,
-                                IFestivalRepository festivalRepository){
+                                IFestivalRepository festivalRepository,
+                                IStaffRepository staffRepository){
         this.unidadDeVentaRepository = unidadDeVentaRepository;
         this.modelMapper = modelMapper;
         this.userRepository=userRepository;
         this.festivalRepository=festivalRepository;
+        this.staffRepository=staffRepository;
     }
 
     public List<UnidadDeVenta> getAll(){
@@ -83,18 +93,28 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
         return modelMapper.map(unidadDeVenta, UnidadDeVentaDTO.class);
     }
 
-    @Override 
+    @Autowired 
+    private PasswordEncoder passwordEncoder;
+
+
+    @Override
+    @Transactional 
     public UnidadDeVenta registrarConResponsable(RegistroUnidadDTO dto){
         if(userRepository.findByUsername(dto.getUsername()).isPresent()){
             throw new IllegalArgumentException("El nombre de usuario '" + dto.getUsername() + "' ya está en uso. Por favor, elegí otro.");
         }
-        
+        if(staffRepository.findByDni(dto.getDni()).isPresent()){
+            throw new IllegalArgumentException("Ya existe un responsable con el DNI " + dto.getDni());
+        }
+        if(unidadDeVentaRepository.findByCodigoUnico(dto.getCodigoUnico()).isPresent()){
+            throw new IllegalArgumentException("Ya existe una unidad con el codigo unico " + dto.getCodigoUnico());
+        }
         Festival festival = festivalRepository.findById(dto.getIdFestival())
         .orElseThrow(()->new IllegalArgumentException("No se encontro el festival con ID: "+dto.getIdFestival()));
         
         User user = new User();
         user.setUsername(dto.getUsername());
-        user.setPassword(dto.getPassword());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
         user.setEnabled(true);
         UserRole userRole = new UserRole(user,Rol.RESPONSABLE);
         user.getUserRoles().add(userRole);

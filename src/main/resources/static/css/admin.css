@@ -1,0 +1,232 @@
+/* ===== Base: pantalla en columna (navbar / contenido centrado / footer) ===== */
+body.admin-body {
+    background-color: #000;
+    margin: 0;
+    min-height: 100vh;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+}
+
+body.admin-body::before {
+    content: "";
+    position: fixed;
+    inset: -20px;
+    background: url('/assets/fondo.jpg') no-repeat center center;
+    background-size: cover;
+    filter: blur(6px) brightness(0.35);
+    z-index: -1;
+}
+
+/* El contenido ocupa el espacio libre y queda centrado vertical y horizontalmente */
+.admin-main {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 90px 1rem 2rem;   /* 90px de arriba para no quedar tapado por el navbar fijo */
+}
+
+.admin-container {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* ===== Navbar ===== */
+.admin-body .navbar {
+    background: rgba(0, 0, 0, 0.55) !important;
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+}
+
+.admin-body .navbar-brand {
+    color: #fff;
+    font-weight: 400;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-logo {
+    width: 28px;
+    height: auto;
+    margin-right: 0.6rem;
+    filter: brightness(0) invert(1);
+}
+
+.admin-body .navbar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    transition: color 0.2s ease;
+}
+
+.admin-body .navbar .nav-link:hover,
+.admin-body .navbar .nav-link:focus {
+    color: #fff;
+}
+
+/* Dropdown del usuario */
+.admin-body .dropdown-menu {
+    background: rgba(20, 20, 20, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    margin-top: 0.5rem;
+}
+
+/* ===== Footer ===== */
+.admin-body footer {
+    background: rgba(0, 0, 0, 0.55) !important;
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ===== Banner "Panel de Administración" (card centrada) ===== */
+.admin-hero {
+    background: rgba(20, 20, 20, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+    padding: 2.5rem 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+.admin-hero h1 {
+    font-weight: 400;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-size: 1.8rem;
+    color: #fff;
+}
+
+.admin-hero hr {
+    border-color: rgba(255, 255, 255, 0.2);
+    width: 60%;
+}
+
+.admin-hero p {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* ===== Cartas de opciones (grilla 2x2 centrada) ===== */
+.admin-card {
+    background: rgba(20, 20, 20, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 12px;
+    -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+    text-align: center;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.admin-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.admin-card .card-body {
+    padding: 1.75rem 1.5rem;
+}
+
+.admin-card .card-title {
+    color: #fff;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+}
+
+.admin-card .card-text {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+}
+
+.admin-card .btn-pill {
+    align-self: center;   /* botón centrado dentro de la carta */
+}
+
+/* ===== Botón pill (igual al del login) ===== */
+.btn-pill {
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    border-radius: 50rem;
+    padding: 0.5rem 1.5rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.btn-pill:hover {
+    background: #fff;
+    color: #000;
+}
+
+/* ===== Formularios dentro del panel ===== */
+.admin-form label {
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 0.2rem;
+}
+
+.admin-form .form-section {
+    color: #fff;
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-size: 0.95rem;
+    padding-bottom: 0.5rem;
+    margin: 1.5rem 0 1.25rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.admin-form .form-section:first-of-type {
+    margin-top: 0;
+}
+
+.admin-form .form-control-line {
+    background: transparent !important;
+    border: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 0;
+    color: #fff !important;
+    padding: 0.4rem 0;
+    height: auto;
+    box-shadow: none;
+    outline: none;
+}
+
+.admin-form .form-control-line:focus {
+    border-bottom-color: #fff;
+    box-shadow: none;
+    outline: none;
+}
+
+.admin-form .form-control-line:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #1a1a1a inset !important;
+    -webkit-text-fill-color: #fff !important;
+}
+
+/* Opciones del select legibles sobre fondo oscuro */
+.admin-form select.form-control-line option {
+    background: #1a1a1a;
+    color: #fff;
+}

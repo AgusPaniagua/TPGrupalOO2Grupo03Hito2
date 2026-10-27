@@ -56,6 +56,9 @@ public class UnidadDeVenta {
 
     public UnidadDeVenta(String nombreComercial, double superficie, String codigoUnico, Festival festival, Staff responsable){
         this.nombreComercial=nombreComercial;
+        if(superficie<=0){
+            throw new IllegalArgumentException("La superficie no puede ser 0 o negativo");
+        }
         this.superficie=superficie;
         if(codigoUnico == null){
             throw new IllegalArgumentException("El código no puede ser nulo.");
