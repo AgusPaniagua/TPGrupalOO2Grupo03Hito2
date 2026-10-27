@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.grupo3.tp_hito_2.dtos.FoodTruckDTO;
 import com.grupo3.tp_hito_2.dtos.PuestoDesarmableDTO;
 import com.grupo3.tp_hito_2.dtos.RegistroUnidadDTO;
+import com.grupo3.tp_hito_2.dtos.ReporteMayoresCanonDTO;
 import com.grupo3.tp_hito_2.dtos.UnidadDeVentaDTO;
 import com.grupo3.tp_hito_2.entities.Festival;
 import com.grupo3.tp_hito_2.entities.FoodTruck;
@@ -64,6 +65,10 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
     
     public Optional<UnidadDeVenta> findById(Long id){
         return unidadDeVentaRepository.findById(id);
+    }
+
+    public Optional<Festival> findByFestivalById(Long id){
+        return festivalRepository.findById(id);
     }
 
     public Optional<UnidadDeVenta> findByCodigoUnico(String codigoUnico){
@@ -134,6 +139,17 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
             responsable);
         
         return unidadDeVentaRepository.save(ud);
+    }
+
+    @Override
+    @Transactional(readOnly=true)
+    public List<ReporteMayoresCanonDTO> generarReporteMayoresCanon(Long idFestival, int x){
+        if(x<=0){
+            throw new IllegalArgumentException("El limite no puede ser 0 o negativo");
+        }
+        Festival festival = festivalRepository.findById(idFestival)
+        .orElseThrow(()->new IllegalArgumentException("No se encontro el festival con ID: "+idFestival));
+        List<UnidadDeVenta> unidades = unidadDeVentaRepository.fin
     }
 
 }

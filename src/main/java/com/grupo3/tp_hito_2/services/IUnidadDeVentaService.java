@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Optional;
 
 import com.grupo3.tp_hito_2.dtos.RegistroUnidadDTO;
+import com.grupo3.tp_hito_2.dtos.ReporteMayoresCanonDTO;
 import com.grupo3.tp_hito_2.dtos.UnidadDeVentaDTO;
+import com.grupo3.tp_hito_2.entities.Festival;
 import com.grupo3.tp_hito_2.entities.UnidadDeVenta;
 public interface IUnidadDeVentaService {
 
@@ -21,4 +23,8 @@ public interface IUnidadDeVentaService {
     UnidadDeVentaDTO convertirADTO(UnidadDeVenta unidadDeVenta);
 
     UnidadDeVenta registrarConResponsable(RegistroUnidadDTO dto);
+
+    List<ReporteMayoresCanonDTO> generarReporteMayoresCanon(Long idFestival, int x);
+
+    Optional<Festival> findByFestivalById(Long id);
 } 
