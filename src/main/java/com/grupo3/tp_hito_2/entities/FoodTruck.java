@@ -24,4 +24,13 @@ public class FoodTruck extends UnidadDeVenta {
         this.patente=patente;
         this.conexionElectrica=conexionElectrica;
     }
+
+    public double calcularCanon(){
+        double canon = getSuperficie()*500;
+        if(conexionElectrica){
+            return canon + 2000;
+        }else{
+            return canon;
+        }
+    }
 }

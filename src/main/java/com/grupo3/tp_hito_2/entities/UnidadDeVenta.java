@@ -23,7 +23,7 @@ import lombok.ToString;
 @Getter @Setter @NoArgsConstructor
 @ToString (onlyExplicitlyIncluded = true)
 @Inheritance(strategy = InheritanceType.JOINED)
-public class UnidadDeVenta {
+public abstract class UnidadDeVenta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,4 +70,6 @@ public class UnidadDeVenta {
         this.festival=festival;
         this.responsable=responsable;
     }
+
+    public abstract double calcularCanon();
 }
