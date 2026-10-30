@@ -19,9 +19,25 @@ public class FoodTruck extends UnidadDeVenta {
     @ToString.Include
     private boolean conexionElectrica;
 
-    public FoodTruck(String nombreComercial, double superficie, String codigoUnico, Festival festival,Staff responsable, String patente, boolean conexionElectrica){
+    public FoodTruck(String nombreComercial, double superficie, String codigoUnico, Festival festival,User responsable, String patente, boolean conexionElectrica){
         super(nombreComercial, superficie, codigoUnico, festival,responsable);
         this.patente=patente;
         this.conexionElectrica=conexionElectrica;
     }
+
+    @Override 
+    public double calcularCanon(){
+        double canon = getSuperficie()*500;
+        if(conexionElectrica){
+            return canon + 2000;
+        }else{
+            return canon;
+        }
+    }
+
+    @Override
+    public TipoUnidad getTipoUnidad(){
+        return TipoUnidad.FOOD_TRUCK;
+    }
+
 }

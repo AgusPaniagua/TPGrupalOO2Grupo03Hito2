@@ -24,9 +24,13 @@ public class RegistroUnidadDTO {
     Long idFestival;
     @NotNull(message = "Elegi un tipo de unidad")
     TipoUnidad tipo;
+    @NotBlank(message = "La patente es obligatorio")
     String patente;
+    @NotNull(message = "Elegi una opcion")
     boolean conexionElectrica;
+    @NotBlank(message = "El numero de cantidad de carpas es obligatorio")
     Integer cantidadDeCarpas;
+    @NotBlank(message = "El tiempo de montaje es obligatorio")
     Integer tiempoDeMontaje;
 
     //RESPONSABLE

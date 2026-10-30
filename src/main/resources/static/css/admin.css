@@ -230,3 +230,33 @@ body.admin-body::before {
     background: #1a1a1a;
     color: #fff;
 }
+
+/* ===== Tabla del reporte de canon ===== */
+
+.admin-form .table {
+    color: #fff;
+    background: rgba(20, 20, 20, 0.4);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.admin-form .table thead th {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    vertical-align: middle;
+}
+
+.admin-form .table td {
+    color: rgba(255, 255, 255, 0.85);
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    vertical-align: middle;
+}
+
+.admin-form .table-hover tbody tr:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}

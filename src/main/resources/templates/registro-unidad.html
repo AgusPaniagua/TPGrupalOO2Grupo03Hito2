@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head th:replace="~{layout :: head}"></head>
+
 <body class="admin-body">
     <nav th:replace="~{layout :: navbar}"></nav>
 
@@ -20,32 +21,79 @@
 
                     <div class="form-group">
                         <label for="nombreComercial">Nombre comercial</label>
-                        <input type="text" class="form-control form-control-line"
-                               id="nombreComercial" th:field="*{nombreComercial}" required/>
+                        <input type="text" class="form-control form-control-line" id="nombreComercial"
+                            th:field="*{nombreComercial}" required />
                     </div>
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="superficie">Superficie (m²)</label>
-                            <input type="number" step="0.01" class="form-control form-control-line"
-                                   id="superficie" th:field="*{superficie}" required/>
+                            <input type="number" step="0.01" class="form-control form-control-line" id="superficie"
+                                th:field="*{superficie}" required />
                         </div>
                         <div class="form-group col-md-6">
                             <label for="codigoUnico">Código único (10 caracteres)</label>
-                            <input type="text" class="form-control form-control-line"
-                                   id="codigoUnico" th:field="*{codigoUnico}" maxlength="10" required/>
+                            <input type="text" class="form-control form-control-line" id="codigoUnico"
+                                th:field="*{codigoUnico}" maxlength="10" required />
                         </div>
                     </div>
-
+                    <div class="form-group">
+                        <label for="tipo">Tipo de unidad</label>
+                        <select class="form-control form-control-line" id="tipo" th:field="*{tipo}" required>
+                            <option value="">Seleccioná un tipo...</option>
+                            <option value="FOOD_TRUCK">Food Truck</option>
+                            <option value="PUESTO_DESARMABLE">Puesto Desarmable</option>
+                        </select>
+                    </div>
                     <div class="form-group">
                         <label for="idFestival">Festival</label>
-                        <select class="form-control form-control-line" id="idFestival"
-                                th:field="*{idFestival}" required>
+                        <select class="form-control form-control-line" id="idFestival" th:field="*{idFestival}"
+                            required>
                             <option value="">Seleccioná un festival...</option>
-                            <option th:each="fest : ${festivales}"
-                                    th:value="${fest.idFestival}"
-                                    th:text="${fest.nombre}"></option>
+                            <option th:each="fest : ${festivales}" th:value="${fest.idFestival}"
+                                th:text="${fest.nombre}"></option>
                         </select>
+                    </div>
+                    <!-- DATOS DEL FOOD TRUCK -->
+                    <div id="datosFoodTruck" style="display: none;">
+
+                        <h5 class="form-section">Datos del Food Truck</h5>
+
+                        <div class="form-group">
+                            <label for="patente">Patente</label>
+                            <input type="text" class="form-control form-control-line" id="patente" th:field="*{patente}"
+                                placeholder="Ej: AB123CD" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="conexionElectrica">¿Requiere conexión eléctrica?</label>
+                            <select class="form-control form-control-line" id="conexionElectrica"
+                                th:field="*{conexionElectrica}">
+                                <option value="true">Sí</option>
+                                <option value="false">No</option>
+                            </select>
+                        </div>
+
+                    </div> <!-- ACÁ TERMINA FOOD TRUCK -->
+
+
+                    <!-- DATOS DEL PUESTO DESARMABLE -->
+                    <div id="datosPuesto" style="display: none;">
+
+                        <h5 class="form-section">Datos del Puesto Desarmable</h5>
+
+                        <div class="form-group">
+                            <label for="cantidadDeCarpas">Cantidad de carpas</label>
+                            <input type="number" class="form-control form-control-line" id="cantidadDeCarpas"
+                                th:field="*{cantidadDeCarpas}" min="1" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tiempoDeMontaje">Tiempo de montaje</label>
+                            <input type="number" class="form-control form-control-line" id="tiempoDeMontaje"
+                                th:field="*{tiempoDeMontaje}" min="1" />
+                        </div>
+
                     </div>
 
                     <!-- DATOS DEL RESPONSABLE -->
@@ -54,32 +102,32 @@
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="nombre">Nombre</label>
-                            <input type="text" class="form-control form-control-line"
-                                   id="nombre" th:field="*{nombre}" required/>
+                            <input type="text" class="form-control form-control-line" id="nombre" th:field="*{nombre}"
+                                required />
                         </div>
                         <div class="form-group col-md-6">
                             <label for="apellido">Apellido</label>
-                            <input type="text" class="form-control form-control-line"
-                                   id="apellido" th:field="*{apellido}" required/>
+                            <input type="text" class="form-control form-control-line" id="apellido"
+                                th:field="*{apellido}" required />
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="dni">DNI</label>
-                        <input type="number" class="form-control form-control-line"
-                               id="dni" th:field="*{dni}" required/>
+                        <input type="number" class="form-control form-control-line" id="dni" th:field="*{dni}"
+                            required />
                     </div>
 
                     <div class="form-row">
                         <div class="form-group col-md-6">
                             <label for="username">Usuario</label>
-                            <input type="text" class="form-control form-control-line"
-                                   id="username" th:field="*{username}" required/>
+                            <input type="text" class="form-control form-control-line" id="username"
+                                th:field="*{username}" required />
                         </div>
                         <div class="form-group col-md-6">
                             <label for="password">Contraseña</label>
-                            <input type="password" class="form-control form-control-line"
-                                   id="password" th:field="*{password}" required/>
+                            <input type="password" class="form-control form-control-line" id="password"
+                                th:field="*{password}" required />
                         </div>
                     </div>
 
@@ -93,5 +141,41 @@
 
     <footer th:replace="~{layout :: footer}"></footer>
     <div th:replace="~{layout :: scripts}"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const tipo = document.getElementById("tipo");
+            const datosFoodTruck = document.getElementById("datosFoodTruck");
+            const datosPuesto = document.getElementById("datosPuesto");
+
+            const patente = document.getElementById("patente");
+            const cantidadCarpas = document.getElementById("cantidadDeCarpas");
+            const tiempoMontaje = document.getElementById("tiempoDeMontaje");
+
+            function actualizarCampos() {
+
+                const seleccion = tipo.value;
+
+                const esFoodTruck = seleccion === "FOOD_TRUCK";
+                const esPuesto = seleccion === "PUESTO_DESARMABLE";
+
+                datosFoodTruck.style.display = esFoodTruck ? "block" : "none";
+                datosPuesto.style.display = esPuesto ? "block" : "none";
+
+                patente.required = esFoodTruck;
+                cantidadCarpas.required = esPuesto;
+                tiempoMontaje.required = esPuesto;
+
+                patente.disabled = !esFoodTruck;
+                cantidadCarpas.disabled = !esPuesto;
+                tiempoMontaje.disabled = !esPuesto;
+            }
+
+            tipo.addEventListener("change", actualizarCampos);
+
+            actualizarCampos();
+        });
+    </script>
 </body>
+
 </html>
