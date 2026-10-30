@@ -75,5 +75,4 @@ public abstract class UnidadDeVenta {
         this.responsable=responsable;
     }
 
-    public abstract double calcularCanon();
 }
