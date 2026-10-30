@@ -46,21 +46,30 @@ public class UnidadDeVentaController {
         }
     }
 
-    @GetMapping("/festivales/{id}/reporte-canon")
+    @GetMapping("/reporte-canon")
     public String reporteCanon(
-        @PathVariable Long id,
+        @RequestParam(required = false) Long idFestival,
         @RequestParam int x, Model model
     ){
-        try{
-            List<ReporteMayoresCanonDTO > reporte = unidadDeVentaService.generarReporteMayoresCanon(id, x);
-            model.addAttribute("reporte", reporte);
-            model.addAttribute("idFestival", id);
-            model.addAttribute("cantidad", x);
-            return "reporte-canon";
-        }catch(IllegalArgumentException e){
-            model.addAttribute("error", e.getMessage());
-            return "error";
+        model.addAttribute("festivales",festivalRepository.findAll());
+        model.addAttribute("idFestival", idFestival);
+        model.addAttribute("cantidad", x);
+        if(idFestival!=null){
+            try{
+                List<ReporteMayoresCanonDTO > reporte = unidadDeVentaService.generarReporteMayoresCanon(idFestival, x);
+                model.addAttribute("reporte", reporte);
+            
+                
+            }catch(IllegalArgumentException e){
+                model.addAttribute("error", e.getMessage());
+                model.addAttribute("reporte",List.of());
+                
+            }
+        }else{
+            model.addAttribute("reporte",List.of());
         }
+        return "reporte-canon";
+        
     }
 
 }
