@@ -74,4 +74,6 @@ public abstract class UnidadDeVenta {
         this.festival=festival;
         this.responsable=responsable;
     }
+
+    public abstract double calcularCanon();
 }
