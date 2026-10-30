@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
@@ -9,95 +8,99 @@
     <nav th:replace="~{layout :: navbar}"></nav>
 
     <main class="admin-main">
-
         <div class="admin-container admin-form" style="max-width: 1000px;">
 
             <div class="admin-hero">
+                <h1>Reporte de mayores cánones</h1>
+                <p>Consultá las unidades de venta con los cánones más elevados de cada festival.</p>
+            </div>
 
-                <h1 class="text-center mb-4">Reporte de mayores cánones</h1>
+            <form method="get"
+                  th:action="@{/unidades/reporte-canon}"
+                  class="mb-4">
 
-                <p class="text-center">
-                    Unidades de venta con los cánones más elevados del festival.
-                </p>
+                <div class="form-row justify-content-center align-items-end">
 
-                <!-- FORMULARIO DE CONSULTA -->
-                <form method="get"
-                      th:action="@{/unidades/festivales/{id}/reporte-canon(id=${idFestival})}"
-                      class="mb-4">
+                    <div class="form-group col-md-5">
+                        <label for="idFestival">Seleccionar festival</label>
 
-                    <div class="form-row justify-content-center align-items-end">
+                        <select id="idFestival"
+                                name="idFestival"
+                                class="form-control form-control-line"
+                                required>
 
-                        <div class="form-group col-md-4">
-                            <label for="x">Cantidad de unidades</label>
-                            <input type="number"
-                                   id="x"
-                                   name="x"
-                                   class="form-control form-control-line"
-                                   min="1"
-                                   th:value="${cantidad}"
-                                   required />
-                        </div>
+                            <option value="">Seleccioná un festival</option>
 
-                        <div class="form-group col-md-4">
-                            <button type="submit" class="btn btn-pill">
-                                Generar reporte
-                            </button>
-                        </div>
+                            <option th:each="festival : ${festivales}"
+                                    th:value="${festival.idFestival}"
+                                    th:text="${festival.nombre}"
+                                    th:selected="${idFestival != null and idFestival == festival.idFestival}">
+                            </option>
 
+                        </select>
                     </div>
-                </form>
 
-                <!-- TABLA DEL REPORTE -->
-                <div class="table-responsive">
+                    <div class="form-group col-md-3">
+                        <label for="x">Cantidad de unidades</label>
+                        <input type="number"
+                               id="x"
+                               name="x"
+                               class="form-control form-control-line"
+                               min="1"
+                               th:value="${cantidad}"
+                               required />
+                    </div>
 
-                    <table class="table table-dark table-hover text-center">
-
-                        <thead>
-                            <tr>
-                                <th>Posición</th>
-                                <th>Nombre comercial</th>
-                                <th>Código único</th>
-                                <th>Tipo de unidad</th>
-                                <th>Canon</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-
-                            <tr th:each="unidad, iter : ${reporte}">
-                                <td th:text="${iter.count}"></td>
-
-                                <td th:text="${unidad.nombreComercial}"></td>
-
-                                <td th:text="${unidad.codigoUnico}"></td>
-
-                                <td th:text="${unidad.tipo}"></td>
-
-                                <td th:text="${#numbers.formatDecimal(unidad.canon, 1, 2)}"></td>
-                            </tr>
-
-                            <tr th:if="${#lists.isEmpty(reporte)}">
-                                <td colspan="5">
-                                    No hay unidades de venta para mostrar.
-                                </td>
-                            </tr>
-
-                        </tbody>
-
-                    </table>
+                    <div class="form-group col-md-3">
+                        <button type="submit" class="btn btn-pill">
+                            Generar reporte
+                        </button>
+                    </div>
 
                 </div>
+            </form>
 
-                <div class="mt-4">
-                    <a th:href="@{/home}" class="btn btn-pill">
-                        Volver al inicio
-                    </a>
-                </div>
+            <div th:if="${error}" class="alert alert-danger"
+                 th:text="${error}">
+            </div>
 
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre comercial</th>
+                            <th>Código único</th>
+                            <th>Tipo de unidad</th>
+                            <th>Canon</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr th:each="unidad, iter : ${reporte}">
+                            <td th:text="${iter.count}"></td>
+                            <td th:text="${unidad.nombreComercial}"></td>
+                            <td th:text="${unidad.codigoUnico}"></td>
+                            <td th:text="${unidad.tipo}"></td>
+                            <td th:text="${#numbers.formatDecimal(unidad.canon, 1, 2)}"></td>
+                        </tr>
+
+                        <tr th:if="${#lists.isEmpty(reporte)}">
+                            <td colspan="5" class="text-center">
+                                No hay unidades de venta para mostrar.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-center mt-4">
+                <a th:href="@{/home}" class="btn btn-pill">
+                    Volver al inicio
+                </a>
             </div>
 
         </div>
-
     </main>
 
     <footer th:replace="~{layout :: footer}"></footer>
@@ -106,4 +109,3 @@
 
 </body>
 </html>
-```

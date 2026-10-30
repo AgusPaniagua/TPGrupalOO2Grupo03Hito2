@@ -162,6 +162,7 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
         festivalRepository.findById(idFestival)
         .orElseThrow(()->new IllegalArgumentException("No se encontro el festival con ID: "+idFestival));
         List<UnidadDeVenta> unidades = unidadDeVentaRepository.findByFestival_IdFestival(idFestival);
+        
         return unidades.stream().map(unidad -> new ReporteMayoresCanonDTO(
                 unidad.getNombreComercial(),
                 unidad.getCodigoUnico(),  
