@@ -17,15 +17,21 @@ public class PuestoDesarmable extends UnidadDeVenta{
     @ToString.Include
     private int tiempo;
 
-    public PuestoDesarmable(String nombreComercial, double superficie, String codigoUnico, Festival festival, Staff responsable, int cantidadDeCarpas, int tiempo){
+    public PuestoDesarmable(String nombreComercial, double superficie, String codigoUnico, Festival festival, User responsable, int cantidadDeCarpas, int tiempo){
         super(nombreComercial, superficie, codigoUnico, festival,responsable);
         this.cantidadDeCarpas=cantidadDeCarpas;
         this.tiempo=tiempo;
     }
 
+    @Override
     public double calcularCanon(){
-        double canon=getSuperficie()*500;
+        double canon = getSuperficie()*500;
         return canon-(tiempo*10);
+    }
+
+    @Override
+    public TipoUnidad getTipoUnidad(){
+        return TipoUnidad.PUESTO_DESARMABLE;
     }
 
 }

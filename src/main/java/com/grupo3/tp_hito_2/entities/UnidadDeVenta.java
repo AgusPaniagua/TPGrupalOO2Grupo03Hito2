@@ -50,11 +50,15 @@ public abstract class UnidadDeVenta {
     @OneToMany(mappedBy = "unidadDeVenta", cascade = CascadeType.ALL)
     private Set<Staff> personalACargo = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "responsable_id")
-    private Staff responsable;
+    private User responsable;
 
-    public UnidadDeVenta(String nombreComercial, double superficie, String codigoUnico, Festival festival, Staff responsable){
+    public abstract TipoUnidad getTipoUnidad();
+
+    public abstract double calcularCanon();
+
+    public UnidadDeVenta(String nombreComercial, double superficie, String codigoUnico, Festival festival, User responsable){
         this.nombreComercial=nombreComercial;
         if(superficie<=0){
             throw new IllegalArgumentException("La superficie no puede ser 0 o negativo");

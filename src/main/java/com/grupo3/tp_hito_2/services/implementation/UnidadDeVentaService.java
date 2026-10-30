@@ -19,6 +19,7 @@ import com.grupo3.tp_hito_2.entities.FoodTruck;
 import com.grupo3.tp_hito_2.entities.PuestoDesarmable;
 import com.grupo3.tp_hito_2.entities.Rol;
 import com.grupo3.tp_hito_2.entities.Staff;
+import com.grupo3.tp_hito_2.entities.TipoUnidad;
 import com.grupo3.tp_hito_2.entities.UnidadDeVenta;
 import com.grupo3.tp_hito_2.entities.User;
 import com.grupo3.tp_hito_2.entities.UserRole;
@@ -28,8 +29,9 @@ import com.grupo3.tp_hito_2.repositories.IUnidadDeVentaRepository;
 import com.grupo3.tp_hito_2.repositories.IUserRepository;
 import com.grupo3.tp_hito_2.services.IUnidadDeVentaService;
 
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -65,10 +67,6 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
     
     public Optional<UnidadDeVenta> findById(Long id){
         return unidadDeVentaRepository.findById(id);
-    }
-
-    public Optional<Festival> findByFestivalById(Long id){
-        return festivalRepository.findById(id);
     }
 
     public Optional<UnidadDeVenta> findByCodigoUnico(String codigoUnico){
@@ -123,20 +121,34 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
         user.setEnabled(true);
         UserRole userRole = new UserRole(user,Rol.RESPONSABLE);
         user.getUserRoles().add(userRole);
+        userRepository.save(user);
 
         Staff responsable = new Staff();
         responsable.setNombre(dto.getNombre());
         responsable.setApellido(dto.getApellido());
         responsable.setDni(dto.getDni());
         responsable.setUser(user);
+        staffRepository.save(responsable);
         
 
-        UnidadDeVenta ud = new UnidadDeVenta(
-            dto.getNombreComercial(),
-            dto.getSuperficie(),
-            dto.getCodigoUnico(),
-            festival,
-            responsable);
+        UnidadDeVenta ud = switch(dto.getTipo()){
+            case FOOD_TRUCK -> new FoodTruck(
+                dto.getNombreComercial(),
+                dto.getSuperficie(),
+                dto.getCodigoUnico(),
+                festival,
+                user,
+                dto.getPatente(),
+                dto.isConexionElectrica());
+            case PUESTO_DESARMABLE -> new PuestoDesarmable(
+                dto.getNombreComercial(),
+                dto.getSuperficie(),
+                dto.getCodigoUnico(),
+                festival,
+                user,
+                dto.getCantidadDeCarpas(),
+                dto.getTiempoDeMontaje());
+        };
         
         return unidadDeVentaRepository.save(ud);
     }
@@ -147,9 +159,17 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
         if(x<=0){
             throw new IllegalArgumentException("El limite no puede ser 0 o negativo");
         }
-        Festival festival = festivalRepository.findById(idFestival)
+        festivalRepository.findById(idFestival)
         .orElseThrow(()->new IllegalArgumentException("No se encontro el festival con ID: "+idFestival));
-        List<UnidadDeVenta> unidades = unidadDeVentaRepository.fin
+        List<UnidadDeVenta> unidades = unidadDeVentaRepository.findByFestival_IdFestival(idFestival);
+        return unidades.stream().map(unidad -> new ReporteMayoresCanonDTO(
+                unidad.getNombreComercial(),
+                unidad.getCodigoUnico(),  
+                unidad.getTipoUnidad(),  
+                unidad.calcularCanon()))
+                .sorted(Comparator.comparingDouble(ReporteMayoresCanonDTO::getCanon).reversed())
+                .limit(x)
+                .toList();
     }
 
 }

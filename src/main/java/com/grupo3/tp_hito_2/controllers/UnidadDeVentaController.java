@@ -4,11 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.ui.Model;
+import java.util.List;
 
 import com.grupo3.tp_hito_2.dtos.RegistroUnidadDTO;
+import com.grupo3.tp_hito_2.dtos.ReporteMayoresCanonDTO;
+import com.grupo3.tp_hito_2.entities.UnidadDeVenta;
 import com.grupo3.tp_hito_2.repositories.IFestivalRepository;
 import com.grupo3.tp_hito_2.services.IUnidadDeVentaService;
 
@@ -40,4 +45,22 @@ public class UnidadDeVentaController {
             return "registro-unidad";
         }
     }
+
+    @GetMapping("/festivales/{id}/reporte-canon")
+    public String reporteCanon(
+        @PathVariable Long id,
+        @RequestParam int x, Model model
+    ){
+        try{
+            List<ReporteMayoresCanonDTO > reporte = unidadDeVentaService.generarReporteMayoresCanon(id, x);
+            model.addAttribute("reporte", reporte);
+            model.addAttribute("idFestival", id);
+            model.addAttribute("cantidad", x);
+            return "reporte-canon";
+        }catch(IllegalArgumentException e){
+            model.addAttribute("error", e.getMessage());
+            return "error";
+        }
+    }
+
 }
