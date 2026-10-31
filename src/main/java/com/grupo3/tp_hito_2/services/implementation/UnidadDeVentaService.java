@@ -153,6 +153,7 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
         return unidadDeVentaRepository.save(ud);
     }
 
+
     @Override
     @Transactional(readOnly=true)
     public List<ReporteMayoresCanonDTO> generarReporteMayoresCanon(Long idFestival, int x){
@@ -170,6 +171,18 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
                 unidad.calcularCanon()))
                 .sorted(Comparator.comparingDouble(ReporteMayoresCanonDTO::getCanon).reversed())
                 .limit(x)
+                .toList();
+    }
+    @Override
+    @Transactional(readOnly = true)
+    public List<UnidadDeVentaDTO> traerPorFestival(Long idFestival) {
+
+        List<UnidadDeVenta> unidades =
+                unidadDeVentaRepository
+                        .findByFestival_IdFestival(idFestival);
+
+        return unidades.stream()
+                .map(this::convertirADTO)
                 .toList();
     }
 
