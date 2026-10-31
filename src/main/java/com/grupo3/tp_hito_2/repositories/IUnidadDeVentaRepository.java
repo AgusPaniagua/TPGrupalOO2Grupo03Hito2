@@ -12,4 +12,5 @@ public interface IUnidadDeVentaRepository extends JpaRepository<UnidadDeVenta, L
     public abstract Optional<UnidadDeVenta> findByCodigoUnico(String codigoUnico);
 
     public List<UnidadDeVenta> findByFestival_IdFestival(Long id);
+
 }

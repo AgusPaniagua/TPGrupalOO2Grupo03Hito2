@@ -15,12 +15,14 @@
 
         <div class="card admin-card">
             <div class="card-body">
+
                 <div th:if="${#lists.isEmpty(festivales)}">
                     No hay festivales registrados.
                 </div>
 
                 <div class="table-responsive"
                      th:unless="${#lists.isEmpty(festivales)}">
+
                     <table class="table table-dark table-striped">
                         <thead>
                         <tr>
@@ -29,8 +31,10 @@
                             <th>Temporada</th>
                             <th>Fecha de inicio</th>
                             <th>Fecha de fin</th>
+                            <th>Unidades de venta</th>
                         </tr>
                         </thead>
+
                         <tbody>
                         <tr th:each="festival : ${festivales}">
                             <td th:text="${festival.idFestival}"></td>
@@ -38,14 +42,25 @@
                             <td th:text="${festival.temporada}"></td>
                             <td th:text="${festival.fechaInicio}"></td>
                             <td th:text="${festival.fechaFin}"></td>
+
+                            <td>
+                                <a th:href="@{/festivales/{idFestival}/unidades-de-venta(idFestival=${festival.idFestival})}"
+                                   class="btn btn-pill">
+                                    Ver unidades
+                                </a>
+
+
+                            </td>
                         </tr>
                         </tbody>
                     </table>
+
                 </div>
 
-                <a th:href="@{/admin}" class="btn btn-pill">
+                <a th:href="@{/admin/home}" class="btn btn-pill">
                     Volver al panel
                 </a>
+
             </div>
         </div>
     </div>
