@@ -1,0 +1,157 @@
+package com.grupo3.tp_hito_2.services.implementation;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Optional;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.grupo3.tp_hito_2.dtos.EmpleadoDTO;
+import com.grupo3.tp_hito_2.entities.Cajero;
+import com.grupo3.tp_hito_2.entities.Cocinero;
+import com.grupo3.tp_hito_2.entities.Rol;
+import com.grupo3.tp_hito_2.entities.Staff;
+import com.grupo3.tp_hito_2.entities.TipoStaff;
+import com.grupo3.tp_hito_2.entities.User;
+import com.grupo3.tp_hito_2.entities.UserRole;
+import com.grupo3.tp_hito_2.entities.UnidadDeVenta;
+import com.grupo3.tp_hito_2.repositories.IStaffRepository;
+import com.grupo3.tp_hito_2.repositories.IUnidadDeVentaRepository;
+import com.grupo3.tp_hito_2.repositories.IUserRepository;
+import com.grupo3.tp_hito_2.services.IEmpleadoService;
+import com.grupo3.tp_hito_2.utils.GeneradorPassword;
+
+import org.springframework.transaction.annotation.Transactional;
+
+@Service 
+public class EmpleadoService implements IEmpleadoService{
+
+    private final IStaffRepository staffRepository;
+    private final IUserRepository userRepository;
+    private final IUnidadDeVentaRepository unidadDeVentaRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final GeneradorPassword generadorPassword;
+    private final EmailService emailService;
+    private static final int EDAD_MINIMA = 18;
+
+    public EmpleadoService(IStaffRepository staffRepository,IUserRepository userRepository,IUnidadDeVentaRepository unidadDeVentaRepository,
+                        PasswordEncoder passwordEncoder,GeneradorPassword generadorPassword,EmailService emailService){
+                            this.staffRepository=staffRepository;
+                            this.userRepository=userRepository;
+                            this.unidadDeVentaRepository=unidadDeVentaRepository;
+                            this.passwordEncoder=passwordEncoder;
+                            this.generadorPassword=generadorPassword;
+                            this.emailService=emailService;
+                        }
+
+    private  UnidadDeVenta unidadDelResponsable(String userName){
+        return unidadDeVentaRepository.findByResponsableUsername(userName).orElseThrow(
+            ()-> new IllegalArgumentException("No tenes una unidad de venta asignada") );
+    }
+
+    private void validarDto(EmpleadoDTO dto){
+        if(dto.getNombre()==null||dto.getNombre().isBlank()){
+            throw new IllegalArgumentException("El nombre es obligatorio");
+        }
+        if(dto.getApellido()==null||dto.getApellido().isBlank()){
+            throw new IllegalArgumentException("El apellido es obligatorio");
+        }
+        if(dto.getDni()<=0){
+            throw new IllegalArgumentException("El dni no puede ser negativo o 0");
+        }
+        if(dto.getEmail()==null||dto.getEmail().isBlank()){
+            throw new IllegalArgumentException("El email es obligatorio");
+        }else if(normalizarEmail(dto).length()>45){
+            throw new IllegalArgumentException("El email no puede tener mas de 45 caracteres");
+        }else if(!normalizarEmail(dto).matches("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$")){
+            throw new IllegalArgumentException("Formato de email invalido");
+        }
+        if(dto.getSueldoBase()<=0){
+            throw new IllegalArgumentException("El sueldo debe ser mayor a 0");
+        }
+        if(dto.getFechaDeNacimiento()==null||
+        Period.between(dto.getFechaDeNacimiento(), LocalDate.now()).getYears()<EDAD_MINIMA){
+            throw new IllegalArgumentException("El empleado debe tener al menos "+ EDAD_MINIMA + " años");
+        }
+        if(dto.getTipo()==null){
+            throw new IllegalArgumentException("El tipo no puede ser nulo");
+        }else{
+            if(dto.getTipo()==TipoStaff.CAJERO){
+            if(dto.getTurnoDeTrabajo()==null||dto.getTurnoDeTrabajo().isBlank()){
+                throw new IllegalArgumentException("El turno de trabajo es obligatorio");
+            }
+        }
+        if(dto.getTipo()==TipoStaff.COCINERO){
+            if(dto.getEspecialidad()==null||dto.getEspecialidad().isBlank()){
+                throw new IllegalArgumentException("La especialidad es obligatoria");
+            }
+            if(dto.getPlusFijo()==null){
+                throw new IllegalArgumentException("El plus fijo es obligatorio");
+            }
+            if(dto.getPlusFijo()<=0){
+                throw new IllegalArgumentException("El plus no puede ser negativo o 0");
+            }
+        }
+        }
+        
+    }
+
+    private String normalizarEmail(EmpleadoDTO dto){
+        return dto.getEmail().trim().toLowerCase();
+    }
+
+    
+
+    @Override
+    @Transactional
+    public Staff altaEmpleado(String username, EmpleadoDTO dto){
+        UnidadDeVenta unidadConResponsable = unidadDelResponsable(username);
+        validarDto(dto);
+        String email = normalizarEmail(dto);
+        Optional<Staff> empleadoExistente = staffRepository.findByDni(dto.getDni());
+        if(empleadoExistente.isPresent()){
+            if(empleadoExistente.get().isActivo()){
+                throw new IllegalArgumentException("Ya existe un empleado activo con ese DNI");
+            }
+            throw new IllegalArgumentException("El empleado esta dado de baja");
+        }
+        Optional<User> emailExistente = userRepository.findByUsername(email);
+        if(emailExistente.isPresent()){
+            throw new IllegalArgumentException("El email ya esta siendo usado");
+        }
+        String password = generadorPassword.generarPasword();
+        User user = new User();
+        user.setUsername(email);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setEnabled(true);
+        UserRole userRole = new UserRole(user,Rol.EMPLEADO);
+        user.getUserRoles().add(userRole);
+        
+        Staff empleado = switch(dto.getTipo()){
+            case COCINERO ->{
+                Cocinero cocinero = new Cocinero();
+                cocinero.setEspecialidad(dto.getEspecialidad().trim());
+                cocinero.setPlusFijo(dto.getPlusFijo());
+                yield cocinero;
+            }
+            case CAJERO ->{
+                Cajero cajero = new Cajero();
+                cajero.setTurnoDeTrabajo(dto.getTurnoDeTrabajo().trim());
+                yield cajero;
+            }
+        };
+        empleado.setNombre(dto.getNombre().trim());
+        empleado.setApellido(dto.getApellido().trim());
+        empleado.setDni(dto.getDni());
+        empleado.setFechaDeNacimiento(dto.getFechaDeNacimiento());
+        empleado.setSueldoBase(dto.getSueldoBase());
+        empleado.setFechaDeIngreso(LocalDate.now());
+        empleado.setActivo(true);
+        empleado.setUser(user);
+        empleado.setUnidadDeVenta(unidadConResponsable);
+        Staff nuevoEmpleado = staffRepository.save(empleado);
+        emailService.enviarCredenciales(user.getUsername(),dto.getNombre().trim(), password, false);
+        return nuevoEmpleado;
+    }
+}

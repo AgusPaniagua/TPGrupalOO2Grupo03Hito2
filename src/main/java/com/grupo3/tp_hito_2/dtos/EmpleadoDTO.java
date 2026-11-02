@@ -3,6 +3,9 @@ package com.grupo3.tp_hito_2.dtos;
 import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.grupo3.tp_hito_2.entities.TipoStaff;
+
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -30,4 +33,13 @@ public class EmpleadoDTO {
     private LocalDate fechaDeNacimiento;
     @Positive(message = "El sueldo debe ser positivo")
     private double sueldoBase;
+    @NotNull(message = "Elegi un tipo de empleado") 
+    private TipoStaff tipo;
+    @NotBlank(message="El turno de trabajo es obligatorio")
+    private String turnoDeTrabajo;
+    @NotBlank(message = "La especialidad es obligatoria")
+    private String especialidad;
+    @Positive(message = "El plus debe ser positivo")
+    private Integer plusFijo;
+
 }
