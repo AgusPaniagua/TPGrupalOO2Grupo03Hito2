@@ -34,7 +34,11 @@ public class FestivalWebController {
         model.addAttribute("festivales", festivalService.getAll());
         return "festivales";
     }
-
+    @GetMapping("/unidades-de-venta")
+    public String seleccionarFestivalParaUnidades(Model model) {
+        model.addAttribute("festivales", festivalService.getAll());
+        return "seleccionar-festival-unidades";
+    }
     @GetMapping("/festivales/{idFestival}/unidades-de-venta")
     public String verUnidadesDeVenta(
             @PathVariable Long idFestival,
