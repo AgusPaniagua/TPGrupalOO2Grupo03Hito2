@@ -231,8 +231,7 @@ body.admin-body::before {
     color: #fff;
 }
 
-/* ===== Tabla del reporte de canon ===== */
-
+/* ===== Tabla del reporte de canon =====*/
 .admin-form .table {
     color: #fff;
     background: rgba(20, 20, 20, 0.4);
@@ -259,4 +258,101 @@ body.admin-body::before {
 .admin-form .table-hover tbody tr:hover {
     background: rgba(255, 255, 255, 0.08);
     color: #fff;
+}
+/* Reporte de recaudación*/
+.reporte-card {
+    max-width: 450px;
+    margin: 20px auto;
+    padding: 15px;
+    background: rgba(20, 18, 15, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 12px;
+    color: white;
+    text-align: center;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.reporte-card .card-body {
+    padding: 15px;
+}
+
+.reporte-card h4 {
+    color: white;
+    font-size: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.reporte-card p {
+    color: #cccccc;
+    font-size: 14px;
+}
+
+.reporte-card h2 {
+    color: white;
+    font-size: 30px;
+    font-weight: 500;
+    margin: 15px 0;
+}
+/*
+   LISTAS DE FESTIVALES Y UNIDADES*/
+
+
+.admin-list-card {
+    background: rgba(20, 18, 15, 0.78);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 15px;
+    color: white;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.admin-list-card .card-body {
+    padding: 25px;
+}
+
+/* Tablas */
+.admin-list-table {
+    color: white;
+    border-color: rgba(255, 255, 255, 0.15);
+    margin-bottom: 20px;
+}
+
+.admin-list-table thead th {
+    background: rgba(0, 0, 0, 0.45);
+    color: white;
+    font-weight: 600;
+    padding: 15px;
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.admin-list-table tbody td {
+    color: #eeeeee;
+    padding: 13px;
+    vertical-align: middle;
+    border-color: rgba(255, 255, 255, 0.12);
+}
+
+.admin-list-table.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.admin-list-table tbody tr:hover > * {
+    background-color: rgba(255, 255, 255, 0.10);
+    color: white;
+}
+
+/* Selector de unidades*/
+.admin-list-card .form-select {
+    background-color: rgba(20, 18, 15, 0.85);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+}
+
+.admin-list-card .form-select option {
+    background-color: #24211e;
+    color: white;
 }
