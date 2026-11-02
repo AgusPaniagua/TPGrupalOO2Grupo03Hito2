@@ -1,5 +1,7 @@
 package com.grupo3.tp_hito_2.controllers;
 
+import com.grupo3.tp_hito_2.dtos.RankingUnidadDTO;
+import com.grupo3.tp_hito_2.services.implementation.RankingUnidadService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -7,18 +9,24 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.grupo3.tp_hito_2.services.IFestivalService;
 import com.grupo3.tp_hito_2.services.IUnidadDeVentaService;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.util.List;
 
 @Controller
 public class FestivalWebController {
 
     private final IFestivalService festivalService;
     private final IUnidadDeVentaService unidadDeVentaService;
-
+    private final RankingUnidadService rankingUnidadService;
     public FestivalWebController(
             IFestivalService festivalService,
-            IUnidadDeVentaService unidadDeVentaService) {
+            IUnidadDeVentaService unidadDeVentaService,
+            RankingUnidadService rankingUnidadService) {
+
         this.festivalService = festivalService;
         this.unidadDeVentaService = unidadDeVentaService;
+        this.rankingUnidadService = rankingUnidadService;
     }
 
     @GetMapping("/festivales")
@@ -47,5 +55,12 @@ public class FestivalWebController {
 
         model.addAttribute("unidadesDeVenta", unidades);
         return "unidades-de-venta";
+    }
+    @GetMapping("/festivales/{idFestival}/ranking-recaudacion")
+    @ResponseBody
+    public List<RankingUnidadDTO> verRankingRecaudacion(
+            @PathVariable Long idFestival) {
+
+        return rankingUnidadService.generarRankingRecaudacion(idFestival);
     }
 }
