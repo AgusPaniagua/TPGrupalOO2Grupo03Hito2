@@ -17,9 +17,9 @@ public class Cajero extends Staff {
     private String turnoDeTrabajo;
 
     public Cajero(String nombre, String apellido, int dni, LocalDate fechaDeNacimiento,
-                  LocalDate fechaDeIngreso, double sueldoBase, UnidadDeVenta unidadDeVenta,
+                  LocalDate fechaDeIngreso, double sueldoBase, boolean activo, UnidadDeVenta unidadDeVenta,
                   User user,String turnoDeTrabajo) {
-        super(nombre, apellido, dni, fechaDeNacimiento, fechaDeIngreso, sueldoBase, unidadDeVenta,user);
+        super(nombre, apellido, dni, fechaDeNacimiento, fechaDeIngreso, sueldoBase, activo, unidadDeVenta,user);
         this.turnoDeTrabajo = turnoDeTrabajo;
     }
 }
