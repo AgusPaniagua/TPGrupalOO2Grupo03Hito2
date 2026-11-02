@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.grupo3.tp_hito_2.services.IFestivalService;
 import com.grupo3.tp_hito_2.services.IUnidadDeVentaService;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -39,6 +40,30 @@ public class FestivalWebController {
         model.addAttribute("festivales", festivalService.getAll());
         return "seleccionar-festival-unidades";
     }
+    @GetMapping("/ranking-recaudacion")
+    public String seleccionarFestivalParaRanking(Model model) {
+        model.addAttribute("festivales", festivalService.getAll());
+        return "seleccionar-festival-ranking";
+    }
+    @GetMapping("/ranking-recaudacion/consultar")
+    public String consultarRankingRecaudacion(
+
+            @RequestParam Long idFestival, Model model) {
+
+        var festival = festivalService.getAll().stream()
+                .filter(f -> idFestival.equals(f.getIdFestival()))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "No existe el festival con ID: " + idFestival));
+
+        List<RankingUnidadDTO> ranking =
+                rankingUnidadService.generarRankingRecaudacion(idFestival);
+
+        model.addAttribute("festival", festival);
+        model.addAttribute("ranking", ranking);
+        model.addAttribute("festivales", festivalService.getAll());
+        return "ranking-recaudacion";
+    }
     @GetMapping("/festivales/{idFestival}/unidades-de-venta")
     public String verUnidadesDeVenta(
             @PathVariable Long idFestival,
@@ -61,10 +86,20 @@ public class FestivalWebController {
         return "unidades-de-venta";
     }
     @GetMapping("/festivales/{idFestival}/ranking-recaudacion")
-    @ResponseBody
-    public List<RankingUnidadDTO> verRankingRecaudacion(
-            @PathVariable Long idFestival) {
+    public String verRankingRecaudacion(
+            @PathVariable Long idFestival,
+            Model model) {
 
-        return rankingUnidadService.generarRankingRecaudacion(idFestival);
+        var festival = festivalService.getAll().stream().filter(f -> idFestival.equals(f.getIdFestival())).findFirst().orElseThrow(() ->
+                        new IllegalArgumentException(
+                                "No existe el festival con ID: " + idFestival));
+
+        List<RankingUnidadDTO> ranking =
+                rankingUnidadService.generarRankingRecaudacion(idFestival);
+
+        model.addAttribute("festival", festival);
+        model.addAttribute("ranking", ranking);
+
+        return "ranking-recaudacion";
     }
 }
