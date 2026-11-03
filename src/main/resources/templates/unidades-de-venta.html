@@ -1,8 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="~{layout :: head}"></head>
 
 <body class="admin-body">
+
 <nav th:replace="~{layout :: navbar}"></nav>
 
 <main class="admin-main">
@@ -19,17 +22,6 @@
         <div class="card admin-card admin-list-card">
             <div class="card-body">
 
-                <!-- Filtro de visualización -->
-                <div class="mb-3">
-                    <label for="filtroUnidades" class="form-label">
-                        Mostrar:
-                    </label>
-
-                    <select id="filtroUnidades" class="form-select">
-                        <option value="todas">Todas las unidades</option>
-                        <option value="ranking">Ranking por recaudación</option>
-                    </select>
-                </div>
                 <!-- Botón para consultar el reporte -->
                 <div class="mb-3">
                     <button type="button"
@@ -58,19 +50,20 @@
                         </p>
                     </div>
                 </div>
+
                 <!-- Mensaje cuando no hay unidades -->
                 <div id="mensajeVacio"
                      th:classappend="${!#lists.isEmpty(unidadesDeVenta)} ? 'd-none' : ''">
                     Este festival todavía no tiene unidades de venta.
                 </div>
 
-                <!-- Tabla -->
+                <!-- Tabla de unidades -->
                 <div class="table-responsive"
                      th:unless="${#lists.isEmpty(unidadesDeVenta)}">
 
                     <table class="table table-dark table-striped admin-list-table">
                         <thead>
-                        <tr id="encabezadoTabla">
+                        <tr>
                             <th>ID</th>
                             <th>Nombre comercial</th>
                             <th>Superficie (m²)</th>
@@ -78,7 +71,7 @@
                         </tr>
                         </thead>
 
-                        <tbody id="tablaUnidades">
+                        <tbody>
                         <tr th:each="unidad : ${unidadesDeVenta}">
                             <td th:text="${unidad.idUnidadDeVenta}"></td>
                             <td th:text="${unidad.nombreComercial}"></td>
@@ -105,10 +98,6 @@
 <script th:inline="javascript">
 
     const idFestival = /*[[${festival.idFestival}]]*/ 0;
-    const filtro = document.getElementById("filtroUnidades");
-    const tabla = document.getElementById("tablaUnidades");
-    const encabezado = document.getElementById("encabezadoTabla");
-    const mensajeVacio = document.getElementById("mensajeVacio");
     const btnReporte = document.getElementById("btnReporte");
     const reporte = document.getElementById("reporteRecaudacion");
 
@@ -148,69 +137,6 @@
         } catch (error) {
             console.error(error);
             alert("No se pudo cargar el reporte de recaudación.");
-        }
-    });
-    filtro.addEventListener("change", async function () {
-
-        const modo = filtro.value;
-
-        if (modo === "todas") {
-            window.location.reload();
-            return;
-        }
-
-        try {
-            const respuesta = await fetch(
-                `/festivales/${idFestival}/ranking-recaudacion`
-            );
-
-            if (!respuesta.ok) {
-                throw new Error("No se pudo obtener el ranking");
-            }
-
-            const ranking = await respuesta.json();
-
-            encabezado.innerHTML = `
-                <th>Posición</th>
-                <th>Nombre comercial</th>
-                <th>Tipo</th>
-                <th>Recaudación</th>
-            `;
-
-            tabla.innerHTML = "";
-
-            if (ranking.length === 0) {
-                mensajeVacio.textContent =
-                    "No hay unidades de venta para mostrar.";
-                mensajeVacio.style.display = "block";
-            } else {
-                mensajeVacio.style.display = "none";
-
-                ranking.forEach((unidad, index) => {
-                    const fila = document.createElement("tr");
-
-                    const posicion = document.createElement("td");
-                    posicion.textContent = index + 1;
-
-                    const nombre = document.createElement("td");
-                    nombre.textContent = unidad.nombreComercial;
-
-                    const tipo = document.createElement("td");
-                    tipo.textContent = unidad.tipoUnidad;
-
-                    const recaudacion = document.createElement("td");
-                    recaudacion.textContent =
-                        "$ " + unidad.recaudacion.toLocaleString("es-AR");
-
-                    fila.append(posicion, nombre, tipo, recaudacion);
-                    tabla.appendChild(fila);
-                });
-            }
-
-        } catch (error) {
-            console.error(error);
-            alert("Ocurrió un error al cargar el ranking.");
-            filtro.value = "todas";
         }
     });
 
