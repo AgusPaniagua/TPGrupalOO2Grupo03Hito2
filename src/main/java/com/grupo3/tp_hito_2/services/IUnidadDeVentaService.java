@@ -26,5 +26,6 @@ public interface IUnidadDeVentaService {
     List<ReporteMayoresCanonDTO> generarReporteMayoresCanon(Long idFestival, int x);
 
     List<UnidadDeVentaDTO> traerPorFestival(Long idFestival);
-   
+
+    List<UnidadDeVenta> findByResponsableId(Long idUsuario);
 } 

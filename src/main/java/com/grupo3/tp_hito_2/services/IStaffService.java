@@ -21,4 +21,6 @@ public interface IStaffService {
     boolean remove(Long id);
 
     StaffDTO convertirADTO(Staff staff);
+
+    Optional<Staff> findByUserUsername(String username);
 }

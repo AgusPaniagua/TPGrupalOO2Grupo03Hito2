@@ -186,4 +186,10 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
                 .toList();
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<UnidadDeVenta> findByResponsableId(Long idUsuario) {
+        return unidadDeVentaRepository.findByResponsable_Id(idUsuario);
+    }
 }
+

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{layout :: head}"></head>
+
+<body class="admin-body">
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="admin-main">
+    <div class="admin-container">
+
+        <div class="admin-hero">
+            <h1>Reporte de Recaudación</h1>
+            <p>
+                Festival: <strong th:text="${festival.nombre}"></strong>
+            </p>
+            <p>Recaudación de tus unidades de venta asignadas.</p>
+        </div>
+
+        <div class="card admin-card">
+            <div class="card-body p-4">
+
+                <div class="table-responsive admin-form">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre comercial</th>
+                            <th>Tipo de unidad</th>
+                            <th>Recaudación</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="unidad : ${ranking}">
+                            <td th:text="${unidad.idUnidadDeVenta}"></td>
+                            <td th:text="${unidad.nombreComercial}"></td>
+                            <td th:text="${unidad.tipoUnidad}"></td>
+                            <td th:text="${'$ ' + #numbers.formatDecimal(unidad.recaudacion, 1, 2)}"></td>
+                        </tr>
+                        <tr class="fila-total" th:if="${!#lists.isEmpty(ranking)}">
+                            <td colspan="3" class="text-end">
+                                <strong>Recaudación total:</strong>
+                            </td>
+                            <td>
+                                <strong th:text="${'$ ' + #numbers.formatDecimal(totalRecaudacion, 1, 2)}"></strong>
+                            </td>
+                        </tr>
+                        <tr th:if="${#lists.isEmpty(ranking)}">
+                            <td colspan="4" class="text-center">
+                                No hay unidades de venta asignadas para este festival.
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <a th:href="@{/reporte-recaudacion}"
+                   class="btn btn-pill">
+                    Volver a seleccionar festival
+                </a>
+
+                <a th:href="@{/responsable-home}"
+                   class="btn btn-pill">
+                    Volver al panel
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+
+</body>
+</html>
