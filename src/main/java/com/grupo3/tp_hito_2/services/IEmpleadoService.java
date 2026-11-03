@@ -7,4 +7,6 @@ public interface IEmpleadoService {
 
     Staff altaEmpleado(String username, EmpleadoDTO dto);
 
+    Staff reactivarEmpleado(String username, EmpleadoDTO dto);
+
 }
