@@ -73,35 +73,7 @@ import java.util.List;
         model.addAttribute("festivales", festivalService.getAll());
         return "ranking-recaudacion";
     }
-    @GetMapping("/unidades-de-venta")
-    public String seleccionarFestivalParaUnidades(Model model) {
-        model.addAttribute("festivales", festivalService.getAll());
-        return "seleccionar-festival-unidades";
-    }
-    @GetMapping("/ranking-recaudacion")
-    public String seleccionarFestivalParaRanking(Model model) {
-        model.addAttribute("festivales", festivalService.getAll());
-        return "seleccionar-festival-ranking";
-    }
-    @GetMapping("/ranking-recaudacion/consultar")
-    public String consultarRankingRecaudacion(
 
-            @RequestParam Long idFestival, Model model) {
-
-        var festival = festivalService.getAll().stream()
-                .filter(f -> idFestival.equals(f.getIdFestival()))
-                .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(
-                        "No existe el festival con ID: " + idFestival));
-
-        List<RankingUnidadDTO> ranking =
-                rankingUnidadService.generarRankingRecaudacion(idFestival);
-
-        model.addAttribute("festival", festival);
-        model.addAttribute("ranking", ranking);
-        model.addAttribute("festivales", festivalService.getAll());
-        return "ranking-recaudacion";
-    }
     @GetMapping("/festivales/{idFestival}/unidades-de-venta")
     public String verUnidadesDeVenta(
             @PathVariable Long idFestival,
