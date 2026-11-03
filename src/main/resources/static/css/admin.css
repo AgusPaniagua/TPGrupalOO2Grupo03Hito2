@@ -231,8 +231,7 @@ body.admin-body::before {
     color: #fff;
 }
 
-/* ===== Tabla del reporte de canon ===== */
-
+/* ===== Tabla del reporte de canon =====*/
 .admin-form .table {
     color: #fff;
     background: rgba(20, 20, 20, 0.4);
@@ -299,8 +298,6 @@ body.admin-body::before {
 }
 /*
    LISTAS DE FESTIVALES Y UNIDADES*/
-
-
 .admin-list-card {
     background: rgba(20, 18, 15, 0.78);
     border: 1px solid rgba(255, 255, 255, 0.18);
@@ -382,5 +379,5 @@ body.admin-body::before {
 .admin-form .form-select option {
     color: #fff;
     background-color: #252525;
-
 }
+
