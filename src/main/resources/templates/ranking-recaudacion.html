@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout :: head}"></head>
+
+<body class="admin-body">
+
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="admin-main">
+    <div class="admin-container">
+
+        <div class="admin-hero">
+            <h1>Ranking por Recaudación</h1>
+            <p>
+                Festival:
+                <strong th:text="${festival.nombre}"></strong>
+            </p>
+        </div>
+
+        <div class="card admin-card admin-list-card">
+            <div class="card-body">
+
+                <!-- Selector para consultar otro festival -->
+                <form th:action="@{/ranking-recaudacion/consultar}"
+                      method="get"
+                      class="mb-4">
+
+                    <label for="idFestival" class="form-label">
+                        Consultar otro festival
+                    </label>
+
+                    <div class="d-flex gap-2">
+
+                        <select id="idFestival"
+                                name="idFestival"
+                                class="form-select"
+                                required>
+
+                            <option th:each="f : ${festivales}"
+                                    th:value="${f.idFestival}"
+                                    th:text="${f.nombre}"
+                                    th:selected="${f.idFestival == festival.idFestival}">
+                            </option>
+
+                        </select>
+
+                        <button type="submit" class="btn btn-pill">
+                            Consultar
+                        </button>
+
+                    </div>
+                </form>
+
+                <div th:if="${#lists.isEmpty(ranking)}">
+                    No hay unidades de venta registradas para este festival.
+                </div>
+
+                <div class="table-responsive"
+                     th:unless="${#lists.isEmpty(ranking)}">
+
+                    <table class="table table-dark table-striped admin-list-table">
+
+                        <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Unidad de venta</th>
+                            <th>Código único</th>
+                            <th>Tipo</th>
+                            <th>Recaudación</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="unidad, estado : ${ranking}">
+                            <td th:text="${estado.count}"></td>
+                            <td th:text="${unidad.nombreComercial}"></td>
+                            <td th:text="${unidad.codigoUnico}"></td>
+                            <td th:text="${unidad.tipoUnidad}"></td>
+                            <td th:text="${#numbers.formatDecimal(unidad.recaudacion, 1, 2)}"></td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <a th:href="@{/ranking-recaudacion}"
+                   class="btn btn-pill">
+                    Volver al panel de selección
+                </a>
+
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+
+</body>
+</html>
