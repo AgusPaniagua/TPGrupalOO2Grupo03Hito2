@@ -298,8 +298,6 @@ body.admin-body::before {
 }
 /*
    LISTAS DE FESTIVALES Y UNIDADES*/
-
-
 .admin-list-card {
     background: rgba(20, 18, 15, 0.78);
     border: 1px solid rgba(255, 255, 255, 0.18);
@@ -356,3 +354,30 @@ body.admin-body::before {
     background-color: #24211e;
     color: white;
 }
+/* Fila de recaudación total */
+.admin-form .table .fila-total td {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+    font-weight: bold;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+/* Selector de festival - Reporte de Recaudación */
+.admin-form .form-select {
+    color: #fff;
+    background-color: rgba(20, 20, 20, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.admin-form .form-select:focus {
+    background-color: rgba(20, 20, 20, 0.8);
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: none;
+}
+
+.admin-form .form-select option {
+    color: #fff;
+    background-color: #252525;
+}
+

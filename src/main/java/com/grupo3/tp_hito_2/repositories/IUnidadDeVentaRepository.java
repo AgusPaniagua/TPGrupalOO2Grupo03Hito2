@@ -13,4 +13,5 @@ public interface IUnidadDeVentaRepository extends JpaRepository<UnidadDeVenta, L
 
     public List<UnidadDeVenta> findByFestival_IdFestival(Long id);
 
+    List<UnidadDeVenta> findByResponsable_Id(Long idUsuario);
 }

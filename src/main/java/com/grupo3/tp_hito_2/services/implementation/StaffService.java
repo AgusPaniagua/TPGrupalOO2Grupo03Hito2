@@ -46,7 +46,10 @@ public class StaffService implements IStaffService {
     public Optional<Staff> findByDni(int dni) {
         return staffRepository.findByDni(dni);
     }
-
+    @Override
+    public Optional<Staff> findByUserUsername(String username) {
+        return staffRepository.findByUser_Username(username);
+    }
     @Override
     public List<Staff> findByUnidadDeVenta(Long idUnidadDeVenta) {
         return staffRepository.findByUnidadDeVenta_IdUnidadDeVenta(idUnidadDeVenta);

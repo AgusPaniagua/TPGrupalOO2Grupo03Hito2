@@ -181,4 +181,12 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
                 .map(this::convertirADTO)
                 .toList();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<UnidadDeVenta> findByResponsableId(Long idUsuario) {
+        return unidadDeVentaRepository.findByResponsable_Id(idUsuario);
+    }
 }
+
+
