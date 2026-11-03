@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <th:block th:replace="~{layout :: head}"></th:block>
+
+    <style>
+        .rentabilidad-tabla th,
+        .rentabilidad-tabla td {
+            color: #ffffff !important;
+        }
+
+        .rentabilidad-tabla .text-success {
+            color: #198754 !important;
+            font-weight: bold;
+        }
+
+        .rentabilidad-tabla .text-danger {
+            color: #dc3545 !important;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body class="admin-body">
+
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="admin-main">
+    <div class="admin-container">
+
+        <div class="admin-hero">
+            <h1>Rentabilidad Neta</h1>
+
+            <p>
+                Unidad de venta:
+                <strong th:text="${unidad.nombreComercial}"></strong>
+            </p>
+
+            <h3>Desglose de rentabilidad</h3>
+
+            <table class="table rentabilidad-tabla">
+                <thead>
+                <tr>
+                    <th>Concepto</th>
+                    <th>Importe</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr>
+                    <td>Recaudación total</td>
+                    <td class="text-success">
+                        +$<span th:text="${#numbers.formatDecimal(recaudacion, 1, 2)}"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Costo de producción</td>
+                    <td class="text-danger">
+                        -$<span th:text="${#numbers.formatDecimal(costoProduccion, 1, 2)}"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Sueldos</td>
+                    <td class="text-danger">
+                        -$<span th:text="${#numbers.formatDecimal(sueldos, 1, 2)}"></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Canon de la unidad</td>
+                    <td class="text-danger">
+                        -$<span th:text="${#numbers.formatDecimal(canon, 1, 2)}"></span>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <hr>
+
+            <h3>
+                Rentabilidad neta:
+                <span th:class="${rentabilidad > 0} ? 'text-success' : (${rentabilidad < 0} ? 'text-danger' : '')">
+                    $<span th:text="${#numbers.formatDecimal(rentabilidad, 1, 2)}"></span>
+                </span>
+            </h3>
+
+            <a th:href="@{/responsable/home}" class="btn btn-pill">
+                Volver al panel
+            </a>
+        </div>
+
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+
+</body>
+</html>
