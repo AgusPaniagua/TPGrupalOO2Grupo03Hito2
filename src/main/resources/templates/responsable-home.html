@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head th:replace="~{layout :: head}"></head>
+
+<body class="admin-body">
+
+    <nav th:replace="~{layout :: navbar}"></nav>
+
+    <main class="admin-main">
+        <div class="admin-container">
+
+            <div class="admin-hero">
+                <h1>Panel del Responsable</h1>
+                <hr>
+                <p>
+                    Bienvenido al panel de gestión de tu unidad de venta.
+                    Desde aquí podés administrar tus empleados.
+                </p>
+            </div>
+
+            <div class="row justify-content-center">
+
+                <div class="col-md-6 mb-4">
+                    <div class="card admin-card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Gestión de empleados</h5>
+
+                            <p class="card-text">
+                                Consultá, registrá, modificá, reactivá
+                                y gestioná las bajas de tus empleados.
+                            </p>
+
+                            <a th:href="@{/responsable/empleados}"
+                               class="btn btn-pill mt-auto">
+                                Administrar empleados
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </main>
+
+    <footer th:replace="~{layout :: footer}"></footer>
+
+    <div th:replace="~{layout :: scripts}"></div>
+
+</body>
+</html>

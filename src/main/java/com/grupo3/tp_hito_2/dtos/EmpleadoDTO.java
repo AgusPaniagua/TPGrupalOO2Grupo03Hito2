@@ -41,5 +41,6 @@ public class EmpleadoDTO {
     private String especialidad;
     @Positive(message = "El plus debe ser positivo")
     private Integer plusFijo;
+    private boolean activo;
 
 }
