@@ -178,13 +178,13 @@ public class EmpleadoService implements IEmpleadoService {
             throw new IllegalArgumentException("El empleado ya esta activo");
         }
         if (empleado instanceof Cajero cajero) {
-            if(dto.getTipo()!=TipoStaff.CAJERO){
+            if (dto.getTipo() != TipoStaff.CAJERO) {
                 throw new IllegalArgumentException("No se puede cambiar el tipo de un empleado ya registrado.");
             }
             cajero.setTurnoDeTrabajo(dto.getTurnoDeTrabajo().trim());
 
         } else if (empleado instanceof Cocinero cocinero) {
-            if(dto.getTipo()!=TipoStaff.COCINERO){
+            if (dto.getTipo() != TipoStaff.COCINERO) {
                 throw new IllegalArgumentException("No se puede cambiar el tipo de un empleado ya registrado.");
             }
             cocinero.setEspecialidad(dto.getEspecialidad().trim());
@@ -207,5 +207,60 @@ public class EmpleadoService implements IEmpleadoService {
         emailService.enviarCredenciales(user.getUsername(), dto.getNombre().trim(), password, true);
         return empleadoReactivo;
     }
+
+    @Override
+    @Transactional
+    public Staff modificarEmpleado(String username, EmpleadoDTO dto) {
+        UnidadDeVenta unidad = unidadDelResponsable(username);
+        validarDto(dto);
+        Staff empleado = staffRepository.findById(dto.getIdStaff()).orElseThrow(() -> new IllegalArgumentException(
+                "No existe un empeado con ese ID"));
+        if (empleado.getUnidadDeVenta() == null || !empleado.getUnidadDeVenta().getIdUnidadDeVenta()
+                .equals(unidad.getIdUnidadDeVenta())) {
+            throw new IllegalArgumentException("Ese empleado pertenece a otra unidad");
+        }
+        if (!empleado.isActivo()) {
+            throw new IllegalArgumentException("No se puede modificar un empledo dado de baja");
+        }
+        if (empleado instanceof Cajero && dto.getTipo() != TipoStaff.CAJERO) {
+            throw new IllegalArgumentException("No se puede cambiar el tipo de un empleado");
+        }
+        if (empleado instanceof Cocinero && dto.getTipo() != TipoStaff.COCINERO) {
+            throw new IllegalArgumentException("No se puede cambiar el tipo de un empleado");
+        }
+        if (!(empleado instanceof Cajero) &&
+                !(empleado instanceof Cocinero)) {
+
+            throw new IllegalArgumentException(
+                    "Ese registro no corresponde a un empleado modificable");
+        }
+        String email = normalizarEmail(dto);
+        Optional<User> emailExistente = userRepository.findByUsername(email);
+        if (empleado.getDni() != dto.getDni() && staffRepository.findByDni(dto.getDni()).isPresent()) {
+            throw new IllegalArgumentException("El DNI ya pertenece a otro empleado");
+        }
+        User user = empleado.getUser();
+        if (user == null) {
+            throw new IllegalStateException("El empleado no tiene un usuario asociado");
+        }
+        if (emailExistente.isPresent() && emailExistente.get().getId() != user.getId()) {
+            throw new IllegalArgumentException("El email ya esta siendo utilizado por otro usuario");
+        }
+        empleado.setNombre(dto.getNombre().trim());
+        empleado.setApellido(dto.getApellido().trim());
+        empleado.setDni(dto.getDni());
+        empleado.setFechaDeNacimiento(dto.getFechaDeNacimiento());
+        empleado.setSueldoBase(dto.getSueldoBase());
+        user.setUsername(email);
+        if (empleado instanceof Cajero cajero) {
+            cajero.setTurnoDeTrabajo(dto.getTurnoDeTrabajo().trim());
+        } else if (empleado instanceof Cocinero cocinero) {
+            cocinero.setEspecialidad(dto.getEspecialidad().trim());
+            cocinero.setPlusFijo(dto.getPlusFijo());
+        }
+        return staffRepository.save(empleado);
+    }
+
+    
 
 }

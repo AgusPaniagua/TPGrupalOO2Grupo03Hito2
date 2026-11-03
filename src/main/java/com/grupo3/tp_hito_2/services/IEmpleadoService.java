@@ -9,4 +9,6 @@ public interface IEmpleadoService {
 
     Staff reactivarEmpleado(String username, EmpleadoDTO dto);
 
+    Staff modificarEmpleado(String username, EmpleadoDTO dto);
+
 }
