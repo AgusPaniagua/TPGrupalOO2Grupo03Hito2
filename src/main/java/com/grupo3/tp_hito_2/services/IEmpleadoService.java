@@ -11,4 +11,5 @@ public interface IEmpleadoService {
 
     Staff modificarEmpleado(String username, EmpleadoDTO dto);
 
+    Staff darDeBajaEmpleado(String username, EmpleadoDTO dto);
 }

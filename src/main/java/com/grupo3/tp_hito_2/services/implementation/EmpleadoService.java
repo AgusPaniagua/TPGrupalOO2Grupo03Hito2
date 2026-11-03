@@ -261,6 +261,29 @@ public class EmpleadoService implements IEmpleadoService {
         return staffRepository.save(empleado);
     }
 
-    
+    @Override
+    @Transactional
+    public Staff darDeBajaEmpleado(String username, EmpleadoDTO dto){
+        UnidadDeVenta unidad = unidadDelResponsable(username);
+        Staff empleado = staffRepository.findById(dto.getIdStaff()).orElseThrow(() -> new IllegalArgumentException(
+                "No existe un empeado con ese ID"));
+        if (empleado.getUnidadDeVenta() == null || !empleado.getUnidadDeVenta().getIdUnidadDeVenta()
+                .equals(unidad.getIdUnidadDeVenta())) {
+            throw new IllegalArgumentException("Ese empleado pertenece a otra unidad");
+        }
+        if (!empleado.isActivo()) {
+            throw new IllegalArgumentException("No se puede dar de baja a un empledo dado de baja");
+        }
+       
+        User user = empleado.getUser();
+        if(user == null){
+            throw new IllegalArgumentException("El empleado no tiene un usuario asociado");
+        }
+        empleado.setActivo(false);
+        user.setEnabled(false);
+        return staffRepository.save(empleado);
+    }
+
+
 
 }
