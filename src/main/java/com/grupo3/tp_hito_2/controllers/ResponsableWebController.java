@@ -1,4 +1,5 @@
 package com.grupo3.tp_hito_2.controllers;
+
 import com.grupo3.tp_hito_2.entities.Staff;
 import com.grupo3.tp_hito_2.entities.UnidadDeVenta;
 import com.grupo3.tp_hito_2.repositories.IStaffRepository;
@@ -12,176 +13,130 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 import java.time.LocalDate;
 
-
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class ResponsableWebController {
 
-    private final IStaffRepository staffRepository;
-    private final RentabilidadService rentabilidadService;
-    private final IUnidadDeVentaRepository unidadDeVentaRepository;
+        private final IStaffRepository staffRepository;
+        private final RentabilidadService rentabilidadService;
+        private final IUnidadDeVentaRepository unidadDeVentaRepository;
 
-    public ResponsableWebController(
-            IStaffRepository staffRepository,
-            IUnidadDeVentaRepository unidadDeVentaRepository,
-            RentabilidadService rentabilidadService) {
+        public ResponsableWebController(
+                        IStaffRepository staffRepository,
+                        IUnidadDeVentaRepository unidadDeVentaRepository,
+                        RentabilidadService rentabilidadService) {
 
-        this.staffRepository = staffRepository;
-        this.unidadDeVentaRepository = unidadDeVentaRepository;
-        this.rentabilidadService = rentabilidadService;
-    }
+                this.staffRepository = staffRepository;
+                this.unidadDeVentaRepository = unidadDeVentaRepository;
+                this.rentabilidadService = rentabilidadService;
+        }
 
-    @GetMapping("/responsable/rentabilidad")
-    public String consultarRentabilidad(
-            Authentication auth,
-            Model model) {
+        @GetMapping("/responsable/rentabilidad")
+        public String consultarRentabilidad(Authentication auth, Model model) {
 
-        Staff staff = staffRepository
-                .findByUser_Username(auth.getName())
-                .orElseThrow(() ->
-                        new RuntimeException("No se encontró el responsable"));
+                UnidadDeVenta unidad = unidadDeVentaRepository
+                                .findByResponsableUsername(auth.getName())
+                                .orElseThrow(() -> new RuntimeException(
+                                                "No se encontró la unidad de venta del responsable"));
 
-        Long idUnidad = staff.getUnidadDeVenta().getIdUnidadDeVenta();
+                Long idUnidad = unidad.getIdUnidadDeVenta();
 
-        model.addAttribute("festival",
-                staff.getUnidadDeVenta().getFestival());
+                model.addAttribute("festival", unidad.getFestival());
+                model.addAttribute("unidad", unidad);
+                model.addAttribute("recaudacion", rentabilidadService.calcularRecaudacion(idUnidad));
+                model.addAttribute("costoProduccion", rentabilidadService.calcularCostoProduccion(idUnidad));
+                model.addAttribute("sueldos", rentabilidadService.calcularSueldos(idUnidad));
+                model.addAttribute("canon", rentabilidadService.calcularCanon(idUnidad));
+                model.addAttribute("rentabilidad", rentabilidadService.calcularRentabilidadNeta(idUnidad));
 
-        // Calcular cada componente
-        double recaudacion = rentabilidadService.calcularRecaudacion(idUnidad);
-        double costoProduccion = rentabilidadService.calcularCostoProduccion(idUnidad);
-        double sueldos = rentabilidadService.calcularSueldos(idUnidad);
-        double canon = rentabilidadService.calcularCanon(idUnidad);
+                return "rentabilidad";
+        }
 
-        // Calcular rentabilidad neta
-        double rentabilidad = rentabilidadService.calcularRentabilidadNeta(idUnidad);
+        @GetMapping("/responsable/rentabilidad/fechas")
+public String mostrarFormularioRentabilidadFechas(
+        Authentication auth,
+        Model model) {
 
-        // Enviar los datos a la vista
-        model.addAttribute("unidad", staff.getUnidadDeVenta());
-        model.addAttribute("recaudacion", recaudacion);
-        model.addAttribute("costoProduccion", costoProduccion);
-        model.addAttribute("sueldos", sueldos);
-        model.addAttribute("canon", canon);
-        model.addAttribute("rentabilidad", rentabilidad);
+    UnidadDeVenta unidadResponsable = unidadDeVentaRepository
+            .findByResponsableUsername(auth.getName())
+            .orElseThrow(() -> new RuntimeException(
+                    "No se encontró la unidad de venta del responsable"));
 
-        return "rentabilidad";
-    }
+    Long idFestival = unidadResponsable.getFestival().getIdFestival();
 
-    @GetMapping("/responsable/rentabilidad/fechas")
-    public String mostrarFormularioRentabilidadFechas(
-            Authentication auth,
-            Model model) {
+    List<UnidadDeVenta> unidades =
+            unidadDeVentaRepository.findByFestival_IdFestival(idFestival);
 
-        Staff staff = staffRepository
-                .findByUser_Username(auth.getName())
-                .orElseThrow(() ->
-                        new RuntimeException("No se encontró el responsable"));
+    model.addAttribute("unidades", unidades);
+    model.addAttribute("festival", unidadResponsable.getFestival());
 
-        // Obtener el festival del responsable
-        Long idFestival = staff.getUnidadDeVenta()
-                .getFestival().getIdFestival();
+    return "rentabilidad-fechas";
+}
 
-        // Buscar todas las unidades de venta de ese festival
-        List<UnidadDeVenta> unidades =
-                unidadDeVentaRepository.findByFestival_IdFestival(idFestival);
+@PostMapping("/responsable/rentabilidad/fechas")
+public String calcularRentabilidadFechas(
+        Authentication auth,
+        @RequestParam Long idUnidadDeVenta,
+        @RequestParam LocalDate fechaDesde,
+        @RequestParam LocalDate fechaHasta,
+        Model model) {
 
-        model.addAttribute("unidades", unidades);
-        model.addAttribute("festival",
-                staff.getUnidadDeVenta().getFestival());
+    UnidadDeVenta unidadResponsable = unidadDeVentaRepository
+            .findByResponsableUsername(auth.getName())
+            .orElseThrow(() -> new RuntimeException(
+                    "No se encontró la unidad de venta del responsable"));
 
-        return "rentabilidad-fechas";
-    }
+    Long idFestival = unidadResponsable.getFestival().getIdFestival();
 
-    @PostMapping("/responsable/rentabilidad/fechas")
-    public String calcularRentabilidadFechas(
-            Authentication auth,
-            @RequestParam Long idUnidadDeVenta,
-            @RequestParam LocalDate fechaDesde,
-            @RequestParam LocalDate fechaHasta,
-            Model model) {
+    model.addAttribute("festival", unidadResponsable.getFestival());
 
-        Staff staff = staffRepository
-                .findByUser_Username(auth.getName())
-                .orElseThrow(() ->
-                        new RuntimeException("No se encontró el responsable"));
+    List<UnidadDeVenta> unidades =
+            unidadDeVentaRepository.findByFestival_IdFestival(idFestival);
+    model.addAttribute("unidades", unidades);
 
-        // Obtener el festival asignado al responsable
-        Long idFestival = staff.getUnidadDeVenta()
-                .getFestival().getIdFestival();
+    UnidadDeVenta unidad = unidadDeVentaRepository.findById(idUnidadDeVenta)
+            .orElseThrow(() -> new RuntimeException("No se encontró la unidad de venta"));
 
-        // IMPORTANTE: enviar el festival a la vista también en el POST
-        model.addAttribute("festival",
-                staff.getUnidadDeVenta().getFestival());
-
-        // Obtener las unidades de ese festival
-        List<UnidadDeVenta> unidades =
-                unidadDeVentaRepository.findByFestival_IdFestival(idFestival);
-
-        model.addAttribute("unidades", unidades);
-
-        // Buscar la unidad seleccionada
-        UnidadDeVenta unidad = unidadDeVentaRepository.findById(idUnidadDeVenta)
-                .orElseThrow(() ->
-                        new RuntimeException("No se encontró la unidad de venta"));
-
-        // Verificar que la unidad pertenezca al festival del responsable
         if (unidad.getFestival().getIdFestival() != idFestival) {
-            throw new RuntimeException(
-                    "La unidad seleccionada no pertenece a tu festival");
-        }
+        throw new RuntimeException("La unidad seleccionada no pertenece a tu festival");
+    }
 
-        Long idUnidad = unidad.getIdUnidadDeVenta();
+    Long idUnidad = unidad.getIdUnidadDeVenta();
 
-        LocalDate inicioFestival = unidad.getFestival().getFechaInicio();
-        LocalDate finFestival = unidad.getFestival().getFechaFin();
+    LocalDate inicioFestival = unidad.getFestival().getFechaInicio();
+    LocalDate finFestival = unidad.getFestival().getFechaFin();
 
-        // Validar las fechas
-        if (fechaDesde.isAfter(fechaHasta)
-                || fechaDesde.isBefore(inicioFestival)
-                || fechaHasta.isAfter(finFestival)) {
+    if (fechaDesde.isAfter(fechaHasta)
+            || fechaDesde.isBefore(inicioFestival)
+            || fechaHasta.isAfter(finFestival)) {
 
-            model.addAttribute("unidadSeleccionada", idUnidad);
-            model.addAttribute("unidad", unidad);
-            model.addAttribute("error",
-                    "Las fechas deben estar dentro del período del festival: "
-                            + inicioFestival + " al " + finFestival);
-
-            return "rentabilidad-fechas";
-        }
-
-        // Calcular los componentes de rentabilidad
-        double recaudacion =
-                rentabilidadService.calcularRecaudacionEntreFechas(
-                        idUnidad, fechaDesde, fechaHasta);
-
-        double costoProduccion =
-                rentabilidadService.calcularCostoProduccionEntreFechas(
-                        idUnidad, fechaDesde, fechaHasta);
-
-        double sueldos =
-                rentabilidadService.calcularSueldosEntreFechas(
-                        idUnidad, fechaDesde, fechaHasta);
-
-        double canon =
-                rentabilidadService.calcularCanonEntreFechas(
-                        idUnidad, fechaDesde, fechaHasta);
-
-        double rentabilidad =
-                rentabilidadService.calcularRentabilidadNetaEntreFechas(
-                        idUnidad, fechaDesde, fechaHasta);
-
-        // Enviar los resultados a la vista
-        model.addAttribute("unidad", unidad);
         model.addAttribute("unidadSeleccionada", idUnidad);
-        model.addAttribute("fechaDesde", fechaDesde);
-        model.addAttribute("fechaHasta", fechaHasta);
-        model.addAttribute("recaudacion", recaudacion);
-        model.addAttribute("costoProduccion", costoProduccion);
-        model.addAttribute("sueldos", sueldos);
-        model.addAttribute("canon", canon);
-        model.addAttribute("rentabilidad", rentabilidad);
+        model.addAttribute("unidad", unidad);
+        model.addAttribute("error",
+                "Las fechas deben estar dentro del período del festival: "
+                        + inicioFestival + " al " + finFestival);
 
         return "rentabilidad-fechas";
     }
+
+    double recaudacion = rentabilidadService.calcularRecaudacionEntreFechas(idUnidad, fechaDesde, fechaHasta);
+    double costoProduccion = rentabilidadService.calcularCostoProduccionEntreFechas(idUnidad, fechaDesde, fechaHasta);
+    double sueldos = rentabilidadService.calcularSueldosEntreFechas(idUnidad, fechaDesde, fechaHasta);
+    double canon = rentabilidadService.calcularCanonEntreFechas(idUnidad, fechaDesde, fechaHasta);
+    double rentabilidad = rentabilidadService.calcularRentabilidadNetaEntreFechas(idUnidad, fechaDesde, fechaHasta);
+
+    model.addAttribute("unidad", unidad);
+    model.addAttribute("unidadSeleccionada", idUnidad);
+    model.addAttribute("fechaDesde", fechaDesde);
+    model.addAttribute("fechaHasta", fechaHasta);
+    model.addAttribute("recaudacion", recaudacion);
+    model.addAttribute("costoProduccion", costoProduccion);
+    model.addAttribute("sueldos", sueldos);
+    model.addAttribute("canon", canon);
+    model.addAttribute("rentabilidad", rentabilidad);
+
+    return "rentabilidad-fechas";
+}
 }
