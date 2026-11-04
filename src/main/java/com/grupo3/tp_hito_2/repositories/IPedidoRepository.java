@@ -1,3 +1,4 @@
+```java
 package com.grupo3.tp_hito_2.repositories;
 
 import com.grupo3.tp_hito_2.entities.Pedido;
@@ -16,10 +17,14 @@ public interface IPedidoRepository extends JpaRepository<Pedido, Long> {
 
     List<Pedido> findByUnidadDeVenta_IdUnidadDeVenta(Long idUnidadDeVenta);
 
-    // RESNTABILIDAD NETA POR FECHA
-    List<Pedido> findByUnidadDeVenta_IdUnidadDeVentaAndFechaDeTransaccionBetween(Long idUnidadDeVenta,
-            LocalDate fechaDesde, LocalDate fechaHasta);
+    // RENTABILIDAD NETA POR FECHA
+    List<Pedido> findByUnidadDeVenta_IdUnidadDeVentaAndFechaDeTransaccionBetween(
+            Long idUnidadDeVenta, LocalDate fechaDesde, LocalDate fechaHasta);
 
+    long countByUnidadDeVenta_IdUnidadDeVentaAndFechaDeTransaccion(
+            Long idUnidadDeVenta, LocalDate fecha);
+
+    // PLATO ESTRELLA
     @Query("""
             SELECT pp.plato
             FROM Pedido_plato pp
@@ -35,3 +40,4 @@ public interface IPedidoRepository extends JpaRepository<Pedido, Long> {
             @Param("fechaInicio") LocalDate fechaInicio,
             @Param("fechaFin") LocalDate fechaFin);
 }
+```

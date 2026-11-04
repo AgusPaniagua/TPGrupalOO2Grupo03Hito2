@@ -16,4 +16,7 @@ public interface IStaffRepository extends JpaRepository<Staff, Long> {
     List<Staff> findByUnidadDeVenta_IdUnidadDeVenta(Long idUnidadDeVenta);
 
     Optional<Staff> findByUser_Username(String username);
+
+    // Solo personal activo (no dado de baja lógicamente)
+    List<Staff> findByUnidadDeVenta_IdUnidadDeVentaAndActivoTrue(Long idUnidadDeVenta);
 }
