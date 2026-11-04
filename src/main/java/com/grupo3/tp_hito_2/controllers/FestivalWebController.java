@@ -189,6 +189,40 @@ public class FestivalWebController {
 
                 return "reporte-recaudacion";
         }
+        @GetMapping("/responsable/reporte-recaudacion")
+        public String mostrarReporteRecaudacionResponsable(
+                Authentication authentication,
+                Model model) {
+
+                User usuario = userRepository.findByUsername(authentication.getName())
+                        .orElseThrow(() -> new IllegalArgumentException(
+                                "No se encontró el usuario"));
+
+                List<UnidadDeVenta> unidadesResponsable =
+                        unidadDeVentaService.findByResponsableId((long) usuario.getId());
+
+                if (unidadesResponsable.isEmpty()) {
+                        throw new IllegalArgumentException(
+                                "El responsable no tiene una unidad asignada");
+                }
+
+                Festival festival = unidadesResponsable.get(0).getFestival();
+
+                Long idFestival = festival.getIdFestival();
+
+                List<RankingUnidadDTO> ranking =
+                        rankingUnidadService.generarRankingRecaudacion(idFestival);
+
+                double totalRecaudacion = ranking.stream()
+                        .mapToDouble(RankingUnidadDTO::getRecaudacion)
+                        .sum();
+
+                model.addAttribute("festival", festival);
+                model.addAttribute("ranking", ranking);
+                model.addAttribute("totalRecaudacion", totalRecaudacion);
+
+                return "reporte-recaudacion";
+        }
 
         @GetMapping("/responsable-home")
         public String mostrarPanelResponsable() {
