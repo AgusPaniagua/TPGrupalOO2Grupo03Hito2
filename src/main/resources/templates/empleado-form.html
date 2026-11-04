@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout :: head}"></head>
+
+<body class="admin-body">
+
+    <nav th:replace="~{layout :: navbar}"></nav>
+
+    <main class="admin-main">
+        <div class="admin-container admin-form" style="max-width: 720px;">
+            <div class="admin-hero text-left">
+
+                <h2 th:text="${modoEdicion} ? 'Modificar empleado' : 'Registrar empleado'"></h2>
+
+                <div class="alert alert-danger py-2 small" th:if="${error}" th:text="${error}">
+                </div>
+
+                <form th:action="${modoEdicion} ?
+                        @{/responsable/empleados/{id}/actualizar(id=${empleadoDTO.idStaff})} :
+                        @{/responsable/empleados/guardar}" th:object="${empleadoDTO}" method="post">
+
+                    <h5 class="form-section">1. Datos personales</h5>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" class="form-control form-control-line" id="nombre" th:field="*{nombre}"
+                                required />
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="apellido">Apellido</label>
+                            <input type="text" class="form-control form-control-line" id="apellido"
+                                th:field="*{apellido}" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dni">DNI</label>
+                        <input type="number" class="form-control form-control-line" id="dni" th:field="*{dni}"
+                            required />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" class="form-control form-control-line" id="email" th:field="*{email}"
+                            maxlength="45" required />
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="fechaDeNacimiento">Fecha de nacimiento</label>
+                            <input type="date" class="form-control form-control-line" id="fechaDeNacimiento"
+                                th:field="*{fechaDeNacimiento}" required />
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="sueldoBase">Sueldo base</label>
+                            <input type="number" step="0.01" class="form-control form-control-line" id="sueldoBase"
+                                th:field="*{sueldoBase}" required />
+                        </div>
+                    </div>
+
+                    <h5 class="form-section">2. Tipo de empleado</h5>
+
+                    <div class="form-group">
+                        <label for="tipo">Tipo</label>
+                        <select class="form-control form-control-line" id="tipo" th:field="*{tipo}" required>
+                            <option value="">Seleccioná un tipo...</option>
+                            <option value="CAJERO">Cajero</option>
+                            <option value="COCINERO">Cocinero</option>
+                        </select>
+                    </div>
+
+                    <!-- DATOS DEL CAJERO -->
+                    <div id="datosCajero" style="display: none;">
+
+                        <h5 class="form-section">Datos del Cajero</h5>
+
+                        <div class="form-group">
+                            <label for="turnoDeTrabajo">Turno de trabajo</label>
+                            <select class="form-control form-control-line" id="turnoDeTrabajo"
+                                th:field="*{turnoDeTrabajo}">
+                                <option value="">Seleccioná un turno...</option>
+                                <option value="MAÑANA">Mañana</option>
+                                <option value="TARDE">Tarde</option>
+                                <option value="NOCHE">Noche</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                    <!-- DATOS DEL COCINERO -->
+                    <div id="datosCocinero" style="display: none;">
+
+                        <h5 class="form-section">Datos del Cocinero</h5>
+
+                        <div class="form-group">
+                            <label for="especialidad">Especialidad</label>
+                            <input type="text" class="form-control form-control-line" id="especialidad"
+                                th:field="*{especialidad}" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="plusFijo">Plus fijo</label>
+                            <input type="number" class="form-control form-control-line" id="plusFijo"
+                                th:field="*{plusFijo}" min="1" />
+                        </div>
+
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-pill"
+                            th:text="${modoEdicion} ? 'Guardar cambios' : 'Registrar empleado'">
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer th:replace="~{layout :: footer}"></footer>
+
+    <div th:replace="~{layout :: scripts}"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const tipo = document.getElementById("tipo");
+
+            const datosCajero = document.getElementById("datosCajero");
+            const datosCocinero = document.getElementById("datosCocinero");
+
+            const turno = document.getElementById("turnoDeTrabajo");
+            const especialidad = document.getElementById("especialidad");
+            const plusFijo = document.getElementById("plusFijo");
+
+            function actualizarCampos() {
+
+                const esCajero = tipo.value === "CAJERO";
+                const esCocinero = tipo.value === "COCINERO";
+
+                datosCajero.style.display = esCajero ? "block" : "none";
+                datosCocinero.style.display = esCocinero ? "block" : "none";
+
+                turno.required = esCajero;
+                especialidad.required = esCocinero;
+                plusFijo.required = esCocinero;
+
+                turno.disabled = !esCajero;
+                especialidad.disabled = !esCocinero;
+                plusFijo.disabled = !esCocinero;
+            }
+
+            tipo.addEventListener("change", actualizarCampos);
+
+            actualizarCampos();
+        });
+    </script>
+
+</body>
+
+</html>

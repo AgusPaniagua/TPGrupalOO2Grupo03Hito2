@@ -20,9 +20,9 @@ public class Cocinero extends Staff {
     private int plusFijo;
 
     public Cocinero(String nombre, String apellido, int dni, LocalDate fechaDeNacimiento,
-                    LocalDate fechaDeIngreso, double sueldoBase, UnidadDeVenta unidadDeVenta,
+                    LocalDate fechaDeIngreso, double sueldoBase, boolean activo, UnidadDeVenta unidadDeVenta,
                     User user,String especialidad, int plusFijo) {
-        super(nombre, apellido, dni, fechaDeNacimiento, fechaDeIngreso, sueldoBase, unidadDeVenta,user);
+        super(nombre, apellido, dni, fechaDeNacimiento, fechaDeIngreso, sueldoBase, activo, unidadDeVenta,user);
         this.especialidad = especialidad;
         this.plusFijo = plusFijo;
     }

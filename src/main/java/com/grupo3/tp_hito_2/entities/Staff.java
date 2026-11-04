@@ -48,6 +48,8 @@ public class Staff {
     @ToString.Include
     private double sueldoBase;
 
+    private boolean activo;
+
     // El nombre del campo debe ser "unidadDeVenta": UnidadDeVenta lo referencia con mappedBy = "unidadDeVenta"
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "unidad_de_venta_id")
@@ -58,13 +60,14 @@ public class Staff {
     private User user;
 
     public Staff(String nombre, String apellido, int dni, LocalDate fechaDeNacimiento,
-                 LocalDate fechaDeIngreso, double sueldoBase, UnidadDeVenta unidadDeVenta, User user) {
+                 LocalDate fechaDeIngreso, double sueldoBase, boolean activo, UnidadDeVenta unidadDeVenta, User user) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
         this.fechaDeNacimiento = fechaDeNacimiento;
         this.fechaDeIngreso = fechaDeIngreso;
         this.sueldoBase = sueldoBase;
+        this.activo=activo;
         this.unidadDeVenta = unidadDeVenta;
         if (user == null) {
             throw new IllegalArgumentException("El miembro del staff responsable debe tener un usuario y contraseña asignados.");
