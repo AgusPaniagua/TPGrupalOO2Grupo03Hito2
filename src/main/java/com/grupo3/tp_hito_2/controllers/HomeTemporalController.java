@@ -10,11 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeTemporalController {
 
-    @GetMapping("/")
-    public String raiz(){
-        return "redirect:/login";
-    }
-
+   
     @GetMapping({"/home", "/index"})
     public String home(Authentication auth) {
         if(auth==null){

@@ -36,12 +36,13 @@ public class SecurityConfiguration {
 				.authorizeHttpRequests(auth -> {
 					auth.requestMatchers("/css/*", "/assets/*", "/js/*", "/vendor/bootstrap/css/*",
 							"/vendor/jquery/*", "/vendor/bootstrap/js/*").permitAll();
-                    auth.requestMatchers("/","/index","/login").permitAll();
+                    auth.requestMatchers("/","/index","/festivales","/login").permitAll();
                     auth.requestMatchers("/admin/**").hasRole("ADMIN");
-					auth.requestMatchers("/unidades/**").hasRole("ADMIN");
+					auth.requestMatchers("/festivales/*/unidades-de-venta","/unidades-de-venta").hasRole("ADMIN");
+					auth.requestMatchers("/unidades/registro**").hasAnyRole("ADMIN","RESPONSABLE");
 					auth.requestMatchers("/responsable/**").hasRole("RESPONSABLE");
-					auth.requestMatchers("/unidades/**").hasRole("RESPONSABLE");
-					auth.requestMatchers("/empleado/**").hasRole("EMPLEADO");        
+					auth.requestMatchers("/empleado/**").hasRole("EMPLEADO");
+					auth.requestMatchers("/unidades/**").hasRole("ADMIN");  
 					auth.anyRequest().authenticated();
 				})
 				.formLogin(login -> {
