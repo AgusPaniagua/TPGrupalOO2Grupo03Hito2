@@ -61,7 +61,8 @@ public class RankingUnidadService {
             for (Pedido pedido : pedidos) {
                 List<Pedido_plato> platos = pedidoPlatoService.findByPedido(pedido.getIdPedido());
 
-                for (Pedido_plato plato : platos) {recaudacion += plato.getSubTotal();
+                for (Pedido_plato plato : platos) {
+                    recaudacion += plato.getSubTotal();
                 }
             }
             // Creamos el DTO
@@ -86,18 +87,17 @@ public class RankingUnidadService {
 
     @Transactional(readOnly = true)
     public ReporteVentaDTO generarReporteRecaudacion(Long idFestival) {
-        double recaudacionTotal=0;
-    //busca el festival
+        double recaudacionTotal = 0;
+        //busca el festival
         Festival festival = festivalRepository.findById(idFestival)
                 .orElseThrow(() -> new IllegalArgumentException(
                         "No se encontró el festival con ID: " + idFestival));
-    //obtine el ranking de la unidad de venta
+        //obtine el ranking de la unidad de venta
         List<RankingUnidadDTO> ranking = generarRankingRecaudacion(idFestival);
-    //suma la recaudacion
+        //suma la recaudacion
         for (RankingUnidadDTO unidad : ranking) {
             recaudacionTotal += unidad.getRecaudacion();
         }
-        return new ReporteVentaDTO(festival.getIdFestival(), festival.getNombre(),recaudacionTotal);
+        return new ReporteVentaDTO(festival.getIdFestival(), festival.getNombre(), recaudacionTotal);
     }
-
 }

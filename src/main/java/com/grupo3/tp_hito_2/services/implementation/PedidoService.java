@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 import java.util.Optional;
 import java.util.List;
 
@@ -39,6 +41,19 @@ public class PedidoService implements IPedidoService {
 
     public List<Pedido> findByUnidadDeVenta(Long idUnidadDeVenta) {
         return pedidoRepository.findByUnidadDeVenta_IdUnidadDeVenta(idUnidadDeVenta);
+    }
+    //Rentbilidad neta Entre fechas
+    public List<Pedido> findByUnidadDeVentaYFechas(
+            Long idUnidadDeVenta,
+            LocalDate fechaDesde,
+            LocalDate fechaHasta) {
+
+        return pedidoRepository
+                .findByUnidadDeVenta_IdUnidadDeVentaAndFechaDeTransaccionBetween(
+                        idUnidadDeVenta,
+                        fechaDesde,
+                        fechaHasta
+                );
     }
 
     public Pedido insertOrUpdate(Pedido pedido) {
