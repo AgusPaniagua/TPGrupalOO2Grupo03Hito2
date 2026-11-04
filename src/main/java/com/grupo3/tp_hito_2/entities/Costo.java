@@ -1,8 +1,6 @@
 package com.grupo3.tp_hito_2.entities;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import jakarta.persistence.*;
 import lombok.Getter;

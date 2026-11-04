@@ -1,6 +1,5 @@
 package com.grupo3.tp_hito_2.dtos;
-import com.grupo3.tp_hito_2.entities.Plato;
-import com.grupo3.tp_hito_2.entities.UnidadDeVenta;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

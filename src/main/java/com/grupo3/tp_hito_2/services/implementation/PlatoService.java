@@ -5,6 +5,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.modelmapper.ModelMapper;
+
+import com.grupo3.tp_hito_2.repositories.IFestivalRepository;
+import com.grupo3.tp_hito_2.repositories.IPedidoRepository;
 import com.grupo3.tp_hito_2.repositories.IPlatoRepository;
 import com.grupo3.tp_hito_2.repositories.IUnidadDeVentaRepository;
 import com.grupo3.tp_hito_2.services.IPlatoService;
@@ -12,6 +15,7 @@ import com.grupo3.tp_hito_2.services.IPlatoService;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.grupo3.tp_hito_2.dtos.PlatoDTO;
+import com.grupo3.tp_hito_2.entities.Festival;
 import com.grupo3.tp_hito_2.entities.Plato;
 import com.grupo3.tp_hito_2.entities.UnidadDeVenta;
 import java.util.Optional;
@@ -26,12 +30,16 @@ public class PlatoService implements IPlatoService {
 
     private final IPlatoRepository platoRepository;
     private final IUnidadDeVentaRepository unidadDeVentaRepository;
+    private final IFestivalRepository festivalRepository;
+    private final IPedidoRepository pedidoRepository;
     private final ModelMapper modelMapper;
 
     public PlatoService(IPlatoRepository platoRepository, IUnidadDeVentaRepository unidadDeVentaRepository,
-            ModelMapper modelMapper) {
+            IFestivalRepository festivalRepository, IPedidoRepository pedidoRepository,ModelMapper modelMapper) {
         this.platoRepository = platoRepository;
         this.unidadDeVentaRepository = unidadDeVentaRepository;
+        this.festivalRepository=festivalRepository;
+        this.pedidoRepository=pedidoRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -111,6 +119,18 @@ public class PlatoService implements IPlatoService {
                     return dto;
                 })
                 .toList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PlatoDTO obtenerPlatoEstrella(Long idUnidad, Long idFestival){
+        Festival festival = festivalRepository.findById(idFestival).orElseThrow(()
+            -> new RuntimeException("Festival no encontrado"));
+        List<Plato> platos = pedidoRepository.buscarPlatosOrdenadosPorCantidad(idUnidad, idFestival, festival.getFechaInicio(), festival.getFechaFin());
+        if(platos.isEmpty()){
+            return null;
+        }
+        return modelMapper.map(platos.get(0), PlatoDTO.class);
     }
 
 }
