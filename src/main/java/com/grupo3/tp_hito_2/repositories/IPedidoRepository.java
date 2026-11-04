@@ -14,4 +14,6 @@ public interface IPedidoRepository extends JpaRepository<Pedido, Long> {
 //RESNTABILIDAD NETA POR FECHA
     List<Pedido> findByUnidadDeVenta_IdUnidadDeVentaAndFechaDeTransaccionBetween
     (Long idUnidadDeVenta, LocalDate fechaDesde, LocalDate fechaHasta);
+
+    long countByUnidadDeVenta_IdUnidadDeVentaAndFechaDeTransaccion(Long idUnidadDeVenta, LocalDate fecha);
 }
