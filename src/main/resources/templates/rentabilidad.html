@@ -31,7 +31,10 @@
 
         <div class="admin-hero">
             <h1>Rentabilidad Neta</h1>
-
+            <p>
+                Festival:
+                <strong th:text="${festival.nombre}"></strong>
+            </p>
             <p>
                 Unidad de venta:
                 <strong th:text="${unidad.nombreComercial}"></strong>
@@ -89,6 +92,9 @@
 
             <a th:href="@{/responsable/home}" class="btn btn-pill">
                 Volver al panel
+            </a>
+            <a th:href="@{/responsable/rentabilidad/fechas}" class="btn btn-pill">
+                Consultar rentabilidad por FECHA
             </a>
         </div>
 
