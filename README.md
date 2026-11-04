@@ -138,9 +138,20 @@ Run Configurations → pestaña **Environment** → *Add* (una entrada por varia
 
 | Caso de Uso / Funcionalidad | Responsable |
 | :--- | :--- |
-| CU01 -  |  |
-| CU02 -  |  |
-| CU03 -  |  |
+| Responsable - Filtros por uno o varios atributos (empleados no eliminados y platos) | Fernando Fogonsa - PR: _(link)_ |
+| Responsable - Liquidación de haberes | Fernando Fogonsa - PR: _(link)_ |
+| Empleado - Ver mi información (festivales y unidades) | Fernando Fogonsa - PR: _(link)_ |
+| Empleado - Sueldo por festival y descarga de recibo en PDF | Fernando Fogonsa - PR: _(link)_ |
+| Empleado - Ver festival activo y unidad actual | Fernando Fogonsa - PR: _(link)_ |
+| Empleado (Cajero) - Cerrar caja | Fernando Fogonsa - PR: _(link)_ |
+
+---
+
+## 🧪 Datos de prueba
+
+Ejecutar `scripts/datos_prueba_fer.sql` en MySQL **después de levantar la aplicación una vez** (Hibernate crea las tablas).
+Crea un festival activo hoy, una unidad con su responsable, empleados, platos y pedidos.
+Usuarios (contraseña `Test1234`; el usuario es el email completo): `julian.acosta@epicentro.com` (responsable), `lucia.fernandez@epicentro.com`, `martin.gomez@epicentro.com`, `camila.rodriguez@epicentro.com` (cajera) y `nicolas.sosa@epicentro.com` (cajero) como empleados. `facundo.herrera@epicentro.com` es un empleado dado de baja.
 
 ---
 
