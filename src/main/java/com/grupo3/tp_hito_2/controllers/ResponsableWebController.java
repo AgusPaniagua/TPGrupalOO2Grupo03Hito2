@@ -15,6 +15,7 @@ import java.time.LocalDate;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 @Controller
 public class ResponsableWebController {
 
@@ -43,7 +44,9 @@ public class ResponsableWebController {
                         new RuntimeException("No se encontró el responsable"));
 
         Long idUnidad = staff.getUnidadDeVenta().getIdUnidadDeVenta();
-        model.addAttribute("festival", staff.getUnidadDeVenta().getFestival());
+
+        model.addAttribute("festival",
+                staff.getUnidadDeVenta().getFestival());
 
         // Calcular cada componente
         double recaudacion = rentabilidadService.calcularRecaudacion(idUnidad);
@@ -66,20 +69,26 @@ public class ResponsableWebController {
     }
 
     @GetMapping("/responsable/rentabilidad/fechas")
-    public String mostrarFormularioRentabilidadFechas(Authentication auth, Model model) {
+    public String mostrarFormularioRentabilidadFechas(
+            Authentication auth,
+            Model model) {
 
-        Staff staff = staffRepository.findByUser_Username(auth.getName())
-                .orElseThrow(() -> new RuntimeException("No se encontró el responsable"));
+        Staff staff = staffRepository
+                .findByUser_Username(auth.getName())
+                .orElseThrow(() ->
+                        new RuntimeException("No se encontró el responsable"));
 
         // Obtener el festival del responsable
-        Long idFestival = staff.getUnidadDeVenta().getFestival().getIdFestival();
+        Long idFestival = staff.getUnidadDeVenta()
+                .getFestival().getIdFestival();
 
         // Buscar todas las unidades de venta de ese festival
         List<UnidadDeVenta> unidades =
                 unidadDeVentaRepository.findByFestival_IdFestival(idFestival);
 
         model.addAttribute("unidades", unidades);
-        model.addAttribute("festival", staff.getUnidadDeVenta().getFestival());
+        model.addAttribute("festival",
+                staff.getUnidadDeVenta().getFestival());
 
         return "rentabilidad-fechas";
     }
@@ -92,13 +101,18 @@ public class ResponsableWebController {
             @RequestParam LocalDate fechaHasta,
             Model model) {
 
-        Staff staff = staffRepository.findByUser_Username(auth.getName())
+        Staff staff = staffRepository
+                .findByUser_Username(auth.getName())
                 .orElseThrow(() ->
                         new RuntimeException("No se encontró el responsable"));
 
         // Obtener el festival asignado al responsable
         Long idFestival = staff.getUnidadDeVenta()
                 .getFestival().getIdFestival();
+
+        // IMPORTANTE: enviar el festival a la vista también en el POST
+        model.addAttribute("festival",
+                staff.getUnidadDeVenta().getFestival());
 
         // Obtener las unidades de ese festival
         List<UnidadDeVenta> unidades =
@@ -113,7 +127,8 @@ public class ResponsableWebController {
 
         // Verificar que la unidad pertenezca al festival del responsable
         if (unidad.getFestival().getIdFestival() != idFestival) {
-            throw new RuntimeException("La unidad seleccionada no pertenece a tu festival");
+            throw new RuntimeException(
+                    "La unidad seleccionada no pertenece a tu festival");
         }
 
         Long idUnidad = unidad.getIdUnidadDeVenta();
@@ -136,20 +151,25 @@ public class ResponsableWebController {
         }
 
         // Calcular los componentes de rentabilidad
-        double recaudacion = rentabilidadService.calcularRecaudacionEntreFechas(
-                idUnidad, fechaDesde, fechaHasta);
+        double recaudacion =
+                rentabilidadService.calcularRecaudacionEntreFechas(
+                        idUnidad, fechaDesde, fechaHasta);
 
-        double costoProduccion = rentabilidadService.calcularCostoProduccionEntreFechas(
-                idUnidad, fechaDesde, fechaHasta);
+        double costoProduccion =
+                rentabilidadService.calcularCostoProduccionEntreFechas(
+                        idUnidad, fechaDesde, fechaHasta);
 
-        double sueldos = rentabilidadService.calcularSueldosEntreFechas(
-                idUnidad, fechaDesde, fechaHasta);
+        double sueldos =
+                rentabilidadService.calcularSueldosEntreFechas(
+                        idUnidad, fechaDesde, fechaHasta);
 
-        double canon = rentabilidadService.calcularCanonEntreFechas(
-                idUnidad, fechaDesde, fechaHasta);
+        double canon =
+                rentabilidadService.calcularCanonEntreFechas(
+                        idUnidad, fechaDesde, fechaHasta);
 
-        double rentabilidad = rentabilidadService.calcularRentabilidadNetaEntreFechas(
-                idUnidad, fechaDesde, fechaHasta);
+        double rentabilidad =
+                rentabilidadService.calcularRentabilidadNetaEntreFechas(
+                        idUnidad, fechaDesde, fechaHasta);
 
         // Enviar los resultados a la vista
         model.addAttribute("unidad", unidad);
