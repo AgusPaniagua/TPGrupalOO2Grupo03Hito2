@@ -57,6 +57,9 @@ antes de ejecutar la aplicación.
 | `DB_USER` | Usuario de MySQL | Sí | - |
 | `DB_PASSWORD` | Contraseña de MySQL | Sí | - |
 | `DB_URL` | URL de conexión | No | `jdbc:mysql://localhost:3306/tp_hito_2_grupo_3?createDatabaseIfNotExist=true&useSSL=false&serverTimezone=America/Argentina/Buenos_Aires` |
+| `ADMIN_PASSWORD` | Contraseña de ADMIN | Sí | - |
+| `MAIL_USER` | Usuario de GMAIL | Sí | - |
+| `MAIL_PASSWORD` | Contraseña de GMAIL | Sí | - |
  
 Solo hace falta definir `DB_URL` si tu MySQL usa otro puerto o querés otro nombre de base.
  
@@ -130,7 +133,7 @@ Run Configurations → pestaña **Environment** → *Add* (una entrada por varia
  
 ## 📐 Diagrama de clases
  
-[Ver diagrama de clases](ENLACE_AL_DIAGRAMA)
+[Ver diagrama de clases](https://drive.google.com/file/d/1RUXI5VZuCEs2UrrsgPaD6FVfayusrqAq/view?usp=drive_link)
  
 ---
 
@@ -138,12 +141,23 @@ Run Configurations → pestaña **Environment** → *Add* (una entrada por varia
 
 | Caso de Uso / Funcionalidad | Responsable |
 | :--- | :--- |
-| Responsable - Filtros por uno o varios atributos (empleados no eliminados y platos) | Fernando Fogonsa - PR: _(link)_ |
-| Responsable - Liquidación de haberes | Fernando Fogonsa - PR: _(link)_ |
-| Empleado - Ver mi información (festivales y unidades) | Fernando Fogonsa - PR: _(link)_ |
-| Empleado - Sueldo por festival y descarga de recibo en PDF | Fernando Fogonsa - PR: _(link)_ |
-| Empleado - Ver festival activo y unidad actual | Fernando Fogonsa - PR: _(link)_ |
-| Empleado (Cajero) - Cerrar caja | Fernando Fogonsa - PR: _(link)_ |
+| Precargar administrador - Otarga un user con rol admin | Agustin Paniagua - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUAdminPrecargadoInicioSesionAgustinPaniagua))_ |
+| Registrar Unidad con Responsable - Crea una unidad(FoodTruck o PuestoDesarmable) y crea un user con rol Responsable | Agustin Paniagua - PR: _([link_](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CURegistroDeUnidadConResponsableAgustinPaniagua)) |
+| Calcular canon - Calcula el canon de una unidad de venta | Agustin Paniagua - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUCalculoDeCanonAgustinPaniagua))_ |
+|Reporte mayores canon- Da un informe de las unidades de venta con mayor canon | Agustin Paniagua - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUReporteMayoresCanonAgustinPaniagua))_ |
+| Crud de empleado - alta, baja, modificacion, reactivacion de empledos con envio de email con sus credenciales | Agustin Paniagua - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUCrudDeEmpleadoAgustinPaniagua))_ |
+| Alta de platos - alta y vista de platos creados por un responsable | Agustin Paniagua - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUAltaDePlatosAgustinPaniagua))_ |
+| Calcular plato estrella - Muestra cual fue el plato mas vendido en un festival | Agustin Paniagua - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUPlatoEstrellaAgustinPaniagua))_ |
+| Responsable - Filtros por uno o varios atributos (empleados no eliminados y platos) | Fernando Fogonsa - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUFiltrosYLiquidacionResponsableFernandoFogonsa))_ |
+| Responsable - Liquidación de haberes | Fernando Fogonsa - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUFiltrosYLiquidacionResponsableFernandoFogonsa))_ |
+| Empleado - Ver mi información (festivales y unidades) | Fernando Fogonsa - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUFiltrosYLiquidacionResponsableFernandoFogonsa))_ |
+| Empleado - Sueldo por festival y descarga de recibo en PDF | Fernando Fogonsa - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUFiltrosYLiquidacionResponsableFernandoFogonsa))_ |
+| Empleado - Ver festival activo y unidad actual | Fernando Fogonsa - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUFiltrosYLiquidacionResponsableFernandoFogonsa))_ |
+| Empleado (Cajero) - Cerrar caja | Fernando Fogonsa - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUFiltrosYLiquidacionResponsableFernandoFogonsa))_ |
+| Funciones de admin - ver festivales, unidades de x festival | Sergio Cadima - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUFuncionalidadAdministrador))_ |
+| Reporte de recaudacion - Vista de reporte de recaudacion | Sergio Cadima - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUReporteDeRecaudacionSergioCadima))_ |
+| Calculo rentabilidad neta - calcula rentabilida | Sergio Cadima - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUCalculoRentabilidadNetaSergioCadima))_ |
+| Calculo rentabilidad neta entre fechas - calcula rentabilida entre dos fechas dadas | Sergio Cadima - PR: _([link](https://github.com/AgusPaniagua/TPGrupalOO2Grupo03Hito2/tree/CUCalculoRentabilidadNetaEntreFechasSergioCadima))_ |
 
 ---
 
