@@ -1,68 +1,128 @@
+```html
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head th:replace="~{layout :: head}"></head>
+
 <body class="admin-body">
-<nav th:replace="~{layout :: navbar}"></nav>
 
-<main class="admin-main">
-    <div class="admin-container">
+    <nav th:replace="~{layout :: navbar}"></nav>
 
-        <div class="admin-hero">
-            <h1>Panel del empleado</h1>
-            <p class="lead mb-0">
-                Usuario activo: <span class="badge badge-light" sec:authentication="name">empleado</span>
-            </p>
-            <hr class="my-4">
-            <p class="mb-0">Seleccioná una de las opciones disponibles</p>
+    <main class="admin-main">
+        <div class="admin-container">
+
+            <div class="admin-hero">
+                <h1>Panel del Empleado</h1>
+
+                <p class="lead mb-0">
+                    Centro de control de <strong>Epicentro Gourmet</strong><br>
+                    Usuario activo:
+                    <span class="badge badge-light"
+                          sec:authentication="name">Empleado</span>
+                </p>
+
+                <hr class="my-4">
+
+                <p class="mb-0">
+                    Bienvenido a tu espacio de trabajo.
+                    Desde aquí podés consultar información de tu actividad.
+                </p>
+            </div>
+
+            <div class="row">
+
+                <!-- Mi información -->
+                <div class="col-md-6 mb-4">
+                    <div class="card admin-card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">1. Mi información</h5>
+                            <p class="card-text">
+                                Tus datos y los festivales y unidades de venta en las que trabajás.
+                            </p>
+                            <a th:href="@{/empleado/mi-informacion}"
+                               class="btn btn-pill mt-auto">
+                                Ver mi información
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mis sueldos -->
+                <div class="col-md-6 mb-4">
+                    <div class="card admin-card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">2. Mis sueldos</h5>
+                            <p class="card-text">
+                                Sueldo de cada festival y descarga del recibo en PDF.
+                            </p>
+                            <a th:href="@{/empleado/sueldos}"
+                               class="btn btn-pill mt-auto">
+                                Ver mis sueldos
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Asignación actual -->
+                <div class="col-md-6 mb-4">
+                    <div class="card admin-card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">3. Dónde trabajo hoy</h5>
+                            <p class="card-text">
+                                Consultá si tenés que trabajar en un festival activo y en qué unidad.
+                            </p>
+                            <a th:href="@{/empleado/asignacion-actual}"
+                               class="btn btn-pill mt-auto">
+                                Ver asignación actual
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cerrar caja -->
+                <div class="col-md-6 mb-4" th:if="${esCajero}">
+                    <div class="card admin-card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">4. Cerrar caja</h5>
+                            <p class="card-text">
+                                Cerrá la caja de tu unidad al finalizar el día.
+                            </p>
+                            <a th:href="@{/empleado/caja}"
+                               class="btn btn-pill mt-auto">
+                                Ir a la caja
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Plato Estrella -->
+                <div class="col-md-6 mb-4">
+                    <div class="card admin-card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">5. Plato Estrella</h5>
+                            <p class="card-text">
+                                Consultá cuál fue el plato con mayor cantidad
+                                de unidades pedidas en tu unidad de venta
+                                durante el festival.
+                            </p>
+                            <a th:href="@{/empleado/plato-estrella}"
+                               class="btn btn-pill mt-auto">
+                                Consultar Plato Estrella
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
+    </main>
 
-        <div class="row">
-            <div class="col-md-6 mb-4">
-                <div class="card admin-card h-100">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">1. Mi información</h5>
-                        <p class="card-text">Tus datos y los festivales y unidades de venta en las que trabajás.</p>
-                        <a th:href="@{/empleado/mi-informacion}" class="btn btn-pill mt-auto">Ver mi información</a>
-                    </div>
-                </div>
-            </div>
+    <footer th:replace="~{layout :: footer}"></footer>
 
-            <div class="col-md-6 mb-4">
-                <div class="card admin-card h-100">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">2. Mis sueldos</h5>
-                        <p class="card-text">Sueldo de cada festival y descarga del recibo en PDF.</p>
-                        <a th:href="@{/empleado/sueldos}" class="btn btn-pill mt-auto">Ver mis sueldos</a>
-                    </div>
-                </div>
-            </div>
+    <div th:replace="~{layout :: scripts}"></div>
 
-            <div class="col-md-6 mb-4">
-                <div class="card admin-card h-100">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">3. Dónde trabajo hoy</h5>
-                        <p class="card-text">Consultá si tenés que trabajar en un festival activo y en qué unidad.</p>
-                        <a th:href="@{/empleado/asignacion-actual}" class="btn btn-pill mt-auto">Ver asignación actual</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-6 mb-4" th:if="${esCajero}">
-                <div class="card admin-card h-100">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">4. Cerrar caja</h5>
-                        <p class="card-text">Cerrá la caja de tu unidad al finalizar el día.</p>
-                        <a th:href="@{/empleado/caja}" class="btn btn-pill mt-auto">Ir a la caja</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-</main>
-
-<footer th:replace="~{layout :: footer}"></footer>
-<div th:replace="~{layout :: scripts}"></div>
 </body>
 </html>
+```

@@ -23,4 +23,6 @@ public interface IPlatoService {
     List<PlatoDTO> listarPlatosResponsable(String username);
 
     Plato registrarPlato(PlatoDTO platoDTO, String username);
+
+    PlatoDTO obtenerPlatoEstrella(Long idUnidad, Long idFestival);
 } 

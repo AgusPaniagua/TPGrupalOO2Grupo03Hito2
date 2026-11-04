@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +12,6 @@ import java.util.List;
 
 import com.grupo3.tp_hito_2.dtos.RegistroUnidadDTO;
 import com.grupo3.tp_hito_2.dtos.ReporteMayoresCanonDTO;
-import com.grupo3.tp_hito_2.entities.UnidadDeVenta;
 import com.grupo3.tp_hito_2.repositories.IFestivalRepository;
 import com.grupo3.tp_hito_2.services.IUnidadDeVentaService;
 
