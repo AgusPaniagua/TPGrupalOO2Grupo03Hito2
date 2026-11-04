@@ -56,7 +56,7 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
         this.festivalRepository=festivalRepository;
         this.staffRepository=staffRepository;
     }
-
+    
     public List<UnidadDeVenta> getAll(){
         return unidadDeVentaRepository.findAll();
     }

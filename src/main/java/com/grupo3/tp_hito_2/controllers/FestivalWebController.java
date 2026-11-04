@@ -11,9 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.grupo3.tp_hito_2.services.IFestivalService;
 import com.grupo3.tp_hito_2.services.IUnidadDeVentaService;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import org.springframework.security.core.Authentication;
 import com.grupo3.tp_hito_2.entities.User;
 import com.grupo3.tp_hito_2.entities.UnidadDeVenta;
