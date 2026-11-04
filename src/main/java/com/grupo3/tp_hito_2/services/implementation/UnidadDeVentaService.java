@@ -83,14 +83,35 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
         }
     }
 
-    public UnidadDeVentaDTO convertirADTO(UnidadDeVenta unidadDeVenta){
-        if(unidadDeVenta instanceof FoodTruck){
-            return modelMapper.map(unidadDeVenta, FoodTruckDTO.class);
-        }else if(unidadDeVenta instanceof PuestoDesarmable){
-            return modelMapper.map(unidadDeVenta, PuestoDesarmableDTO.class);
+
+    public UnidadDeVentaDTO convertirADTO(UnidadDeVenta unidadDeVenta) {
+
+        UnidadDeVentaDTO dto;
+
+        if (unidadDeVenta instanceof FoodTruck) {
+
+            dto = modelMapper.map(unidadDeVenta, FoodTruckDTO.class);
+
+        } else if (unidadDeVenta instanceof PuestoDesarmable) {
+
+            dto = modelMapper.map(unidadDeVenta, PuestoDesarmableDTO.class);
+
+        } else {
+
+            dto = modelMapper.map(unidadDeVenta, UnidadDeVentaDTO.class);
         }
-        return modelMapper.map(unidadDeVenta, UnidadDeVentaDTO.class);
+
+        dto.setTipoUnidad(unidadDeVenta.getTipoUnidad().name());
+
+        if (unidadDeVenta.getResponsable() != null) {
+            dto.setUsernameResponsable(
+                    unidadDeVenta.getResponsable().getUsername()
+            );
+        }
+
+        return dto;
     }
+
 
     @Autowired 
     private PasswordEncoder passwordEncoder;
