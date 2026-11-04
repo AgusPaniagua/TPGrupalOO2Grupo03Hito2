@@ -19,4 +19,8 @@ public interface IPlatoService {
     Optional<Plato> findByNombreAndUnidadDeVenta(String nombre, UnidadDeVenta unidadDeVenta);
     
     PlatoDTO convertirADTO(Plato plato);
+
+    List<PlatoDTO> listarPlatosResponsable(String username);
+
+    Plato registrarPlato(PlatoDTO platoDTO, String username);
 } 
