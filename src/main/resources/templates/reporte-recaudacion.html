@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<html lang="es"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="~{layout :: head}"></head>
 
 <body class="admin-body">
@@ -54,14 +56,15 @@
                         </tbody>
                     </table>
                 </div>
-
                 <a th:href="@{/reporte-recaudacion}"
-                   class="btn btn-pill">
+                   class="btn btn-pill"
+                   sec:authorize="hasRole('ADMIN')">
                     Volver a seleccionar festival
                 </a>
 
                 <a th:href="@{/responsable-home}"
-                   class="btn btn-pill">
+                   class="btn btn-pill"
+                   sec:authorize="hasRole('RESPONSABLE')">
                     Volver al panel
                 </a>
 

@@ -1,4 +1,4 @@
-```java
+
 package com.grupo3.tp_hito_2.repositories;
 
 import com.grupo3.tp_hito_2.entities.Pedido;
@@ -40,4 +40,3 @@ public interface IPedidoRepository extends JpaRepository<Pedido, Long> {
             @Param("fechaInicio") LocalDate fechaInicio,
             @Param("fechaFin") LocalDate fechaFin);
 }
-```
