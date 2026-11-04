@@ -381,3 +381,47 @@ body.admin-body::before {
     background-color: #252525;
 }
 
+
+/* Tarjetas de unidades de venta */
+.unidad-card {
+    background: #252525 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.unidad-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+}
+
+.unidad-card .card-body {
+    background: transparent !important;
+    color: #ffffff !important;
+}
+
+.unidad-card h4,
+.unidad-card h6,
+.unidad-card p,
+.unidad-card strong,
+.unidad-card span {
+    color: #ffffff;
+}
+
+.unidad-card hr {
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.unidad-card .text-muted {
+    color: #bdbdbd !important;
+}
+
+.unidad-card .text-success {
+    color: #65d69a !important;
+}
+
+.unidad-card .text-danger {
+    color: #ff8585 !important;
+}

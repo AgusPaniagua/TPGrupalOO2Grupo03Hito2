@@ -15,50 +15,41 @@
       <p>Seleccioná un festival para consultar el rendimiento de sus unidades de venta.</p>
     </div>
 
-    <div class="card admin-card">
+    <div class="card admin-card admin-list-card">
       <div class="card-body p-4">
 
-        <form th:action="@{/ranking-recaudacion/consultar}"
-              method="get">
+        <div th:if="${#lists.isEmpty(festivales)}">
+          <p>No hay festivales registrados.</p>
+        </div>
 
-          <div class="mb-4">
-            <label for="idFestival" class="form-label">
-              <strong>Festival</strong>
-            </label>
+        <div th:each="festival : ${festivales}"
+             class="d-flex justify-content-between align-items-center flex-wrap gap-3 p-3 mb-3 border rounded">
 
-            <select id="idFestival"
-                    name="idFestival"
-                    class="form-select"
-                    required>
+          <div>
+            <h5 class="mb-1"
+                th:text="${festival.nombre}">
+              Nombre del festival
+            </h5>
 
-              <option value="" selected disabled>
-                Seleccioná un festival...
-              </option>
-
-              <option th:each="festival : ${festivales}"
-                      th:value="${festival.idFestival}"
-                      th:text="${festival.nombre}">
-              </option>
-
-            </select>
-
-            <small class="form-text">
-              Elegí el festival que querés analizar.
+            <small class="text-muted">
+              ID:
+              <span th:text="${festival.idFestival}"></span>
             </small>
           </div>
 
-          <div class="d-flex flex-wrap gap-2">
-            <button type="submit" class="btn btn-pill">
-              Consultar ranking
-            </button>
+          <a th:href="@{/festivales/{idFestival}/ranking-recaudacion(idFestival=${festival.idFestival})}"
+             class="btn btn-pill">
+            Ver ranking
+          </a>
 
-            <a th:href="@{/admin/home}"
-               class="btn btn-pill">
-              Volver al panel
-            </a>
-          </div>
+        </div>
 
-        </form>
+        <div class="mt-4">
+          <a th:href="@{/admin/home}"
+             class="btn btn-pill">
+            Volver al panel
+          </a>
+        </div>
 
       </div>
     </div>

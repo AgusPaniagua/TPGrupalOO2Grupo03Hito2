@@ -21,36 +21,7 @@
         <div class="card admin-card admin-list-card">
             <div class="card-body">
 
-                <!-- Selector para consultar otro festival -->
-                <form th:action="@{/ranking-recaudacion/consultar}"
-                      method="get"
-                      class="mb-4">
 
-                    <label for="idFestival" class="form-label">
-                        Consultar otro festival
-                    </label>
-
-                    <div class="d-flex gap-2">
-
-                        <select id="idFestival"
-                                name="idFestival"
-                                class="form-select"
-                                required>
-
-                            <option th:each="f : ${festivales}"
-                                    th:value="${f.idFestival}"
-                                    th:text="${f.nombre}"
-                                    th:selected="${f.idFestival == festival.idFestival}">
-                            </option>
-
-                        </select>
-
-                        <button type="submit" class="btn btn-pill">
-                            Consultar
-                        </button>
-
-                    </div>
-                </form>
 
                 <div th:if="${#lists.isEmpty(ranking)}">
                     No hay unidades de venta registradas para este festival.

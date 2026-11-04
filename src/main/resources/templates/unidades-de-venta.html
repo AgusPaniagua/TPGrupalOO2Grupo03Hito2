@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 
@@ -22,7 +23,7 @@
         <div class="card admin-card admin-list-card">
             <div class="card-body">
 
-                <!-- Botón para consultar el reporte -->
+                <!-- Botón de reporte -->
                 <div class="mb-3">
                     <button type="button"
                             id="btnReporte"
@@ -32,7 +33,7 @@
                     </button>
                 </div>
 
-                <!-- Resultado del reporte -->
+                <!-- Reporte de recaudación -->
                 <div id="reporteRecaudacion"
                      class="reporte-card mb-4 d-none">
                     <div class="card-body">
@@ -51,39 +52,135 @@
                     </div>
                 </div>
 
-                <!-- Mensaje cuando no hay unidades -->
+                <!-- Mensaje sin unidades -->
                 <div id="mensajeVacio"
-                     th:classappend="${!#lists.isEmpty(unidadesDeVenta)} ? 'd-none' : ''">
+                     th:if="${#lists.isEmpty(unidadesDeVenta)}">
                     Este festival todavía no tiene unidades de venta.
                 </div>
 
-                <!-- Tabla de unidades -->
-                <div class="table-responsive"
+                <!-- Tarjetas -->
+                <div class="row g-4"
                      th:unless="${#lists.isEmpty(unidadesDeVenta)}">
 
-                    <table class="table table-dark table-striped admin-list-table">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Nombre comercial</th>
-                            <th>Superficie (m²)</th>
-                            <th>Código único</th>
-                        </tr>
-                        </thead>
+                    <div class="col-12 col-md-6 col-xl-4"
+                         th:each="unidad : ${unidadesDeVenta}">
 
-                        <tbody>
-                        <tr th:each="unidad : ${unidadesDeVenta}">
-                            <td th:text="${unidad.idUnidadDeVenta}"></td>
-                            <td th:text="${unidad.nombreComercial}"></td>
-                            <td th:text="${unidad.superficie}"></td>
-                            <td th:text="${unidad.codigoUnico}"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                        <div class="card h-100 unidad-card">
 
+                            <div class="card-body">
+
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+
+                                    <span class="badge"
+                                          th:classappend="${unidad.tipoUnidad == 'FOOD_TRUCK'} ? 'bg-info' : 'bg-success'"
+                                          th:text="${unidad.tipoUnidad == 'FOOD_TRUCK'} ? 'Food Truck' : 'Puesto Desarmable'">
+                                    </span>
+
+                                    <small class="text-muted"
+                                           th:text="'ID: ' + ${unidad.idUnidadDeVenta}">
+                                    </small>
+
+                                </div>
+
+                                <h4 class="card-title mb-3"
+                                    th:text="${unidad.nombreComercial}">
+                                </h4>
+
+                                <hr>
+
+                                <!-- Datos generales -->
+                                <h6 class="mb-3">
+                                    <i class="bi bi-info-circle"></i>
+                                    Información general
+                                </h6>
+
+                                <p>
+                                    <strong>Superficie:</strong>
+                                    <span th:text="${unidad.superficie}"></span> m²
+                                </p>
+
+                                <p>
+                                    <strong>Código único:</strong>
+                                    <span th:text="${unidad.codigoUnico}"></span>
+                                </p>
+
+                                <!-- Datos Food Truck -->
+                                <div th:if="${unidad.tipoUnidad == 'FOOD_TRUCK'}">
+
+                                    <hr>
+
+                                    <h6 class="mb-3">
+                                        <i class="bi bi-truck"></i>
+                                        Datos del Food Truck
+                                    </h6>
+
+                                    <p>
+                                        <strong>Patente:</strong>
+                                        <span th:text="${unidad.patente}"></span>
+                                    </p>
+
+                                    <p>
+                                        <strong>Conexión eléctrica:</strong>
+
+                                        <span th:if="${unidad.conexionElectrica}"
+                                              class="text-success">
+                                            Sí
+                                        </span>
+
+                                        <span th:unless="${unidad.conexionElectrica}"
+                                              class="text-danger">
+                                            No
+                                        </span>
+                                    </p>
+
+                                </div>
+
+                                <!-- Datos Puesto Desarmable -->
+                                <div th:if="${unidad.tipoUnidad == 'PUESTO_DESARMABLE'}">
+
+                                    <hr>
+
+                                    <h6 class="mb-3">
+                                        <i class="bi bi-shop"></i>
+                                        Datos del puesto
+                                    </h6>
+
+                                    <p>
+                                        <strong>Cantidad de carpas:</strong>
+                                        <span th:text="${unidad.cantidadDeCarpas}"></span>
+                                    </p>
+
+                                    <p>
+                                        <strong>Tiempo de montaje:</strong>
+                                        <span th:text="${unidad.tiempo}"></span> minutos
+                                    </p>
+
+                                </div>
+
+                                <!-- Responsable -->
+                                <hr>
+
+                                <h6 class="mb-3">
+                                    <i class="bi bi-person-circle"></i>
+                                    Responsable
+                                </h6>
+
+                                <p th:if="${unidad.usernameResponsable != null}"
+                                   th:text="${unidad.usernameResponsable}">
+                                </p>
+
+                                <p th:unless="${unidad.usernameResponsable != null}"
+                                   class="text-muted">
+                                    Sin responsable asignado
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-                <a th:href="@{/unidades-de-venta}" class="btn btn-pill">
+                <a th:href="@{/unidades-de-venta}"
+                   class="btn btn-pill mt-4">
                     Volver
                 </a>
 
@@ -103,7 +200,6 @@
 
     btnReporte.addEventListener("click", async function () {
 
-        // Si el reporte ya está visible, lo ocultamos
         if (!reporte.classList.contains("d-none")) {
             reporte.classList.add("d-none");
             return;
@@ -144,3 +240,4 @@
 
 </body>
 </html>
+
