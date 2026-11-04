@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout :: head}"></head>
+
+<body class="admin-body">
+
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="admin-main">
+    <div class="admin-container">
+
+        <div class="admin-hero">
+            <h1>Reporte de Recaudación</h1>
+            <p>
+                Seleccioná un festival para consultar la recaudación
+                de tus unidades de venta.
+            </p>
+        </div>
+
+        <div class="card admin-card">
+            <div class="card-body p-4">
+
+                <form th:action="@{/reporte-recaudacion/consultar}"
+                      method="get"
+                      class="admin-form">
+
+                    <div class="mb-4">
+
+                        <label for="idFestival" class="form-label">
+                            <strong>Festival</strong>
+                        </label>
+
+                        <div class="d-flex align-items-center gap-0">
+
+                            <select id="idFestival"
+                                    name="idFestival"
+                                    class="form-select"
+                                    style="width: 350px;"
+                                    required>
+
+                                <option value="" selected disabled>
+                                    Seleccioná un festival...
+                                </option>
+
+                                <option th:each="festival : ${festivales}"
+                                        th:value="${festival.idFestival}"
+                                        th:text="${festival.nombre}">
+                                </option>
+
+                            </select>
+
+                            <button type="submit" class="btn btn-pill">
+                                Consultar unidades
+                            </button>
+
+                        </div>
+
+                        <small class="form-text">
+                            Elegí el festival que querés consultar.
+                        </small>
+
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <a th:href="@{/responsable-home}" class="btn btn-pill">
+                            Volver al panel
+                        </a>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+
+<div th:replace="~{layout :: scripts}"></div>
+
+</body>
+</html>

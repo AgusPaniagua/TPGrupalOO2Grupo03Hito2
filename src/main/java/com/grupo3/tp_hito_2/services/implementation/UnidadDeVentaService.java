@@ -1,5 +1,6 @@
 package com.grupo3.tp_hito_2.services.implementation;
 
+import com.grupo3.tp_hito_2.repositories.*;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,14 +20,9 @@ import com.grupo3.tp_hito_2.entities.FoodTruck;
 import com.grupo3.tp_hito_2.entities.PuestoDesarmable;
 import com.grupo3.tp_hito_2.entities.Rol;
 import com.grupo3.tp_hito_2.entities.Staff;
-import com.grupo3.tp_hito_2.entities.TipoUnidad;
 import com.grupo3.tp_hito_2.entities.UnidadDeVenta;
 import com.grupo3.tp_hito_2.entities.User;
 import com.grupo3.tp_hito_2.entities.UserRole;
-import com.grupo3.tp_hito_2.repositories.IFestivalRepository;
-import com.grupo3.tp_hito_2.repositories.IStaffRepository;
-import com.grupo3.tp_hito_2.repositories.IUnidadDeVentaRepository;
-import com.grupo3.tp_hito_2.repositories.IUserRepository;
 import com.grupo3.tp_hito_2.services.IUnidadDeVentaService;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -186,4 +182,11 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
                 .toList();
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<UnidadDeVenta> findByResponsableId(Long idUsuario) {
+        return unidadDeVentaRepository.findByResponsable_Id(idUsuario);
+    }
 }
+
+

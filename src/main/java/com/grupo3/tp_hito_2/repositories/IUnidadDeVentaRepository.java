@@ -15,4 +15,6 @@ public interface IUnidadDeVentaRepository extends JpaRepository<UnidadDeVenta, L
 
     Optional<UnidadDeVenta> findByResponsableUsername(String userName);
 
+    List<UnidadDeVenta> findByResponsable_Id(Long idUsuario);
+
 }

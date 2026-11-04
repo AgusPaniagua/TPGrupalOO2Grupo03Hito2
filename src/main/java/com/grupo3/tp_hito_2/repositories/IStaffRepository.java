@@ -14,4 +14,6 @@ public interface IStaffRepository extends JpaRepository<Staff, Long> {
     Optional<Staff> findByDni(int dni);
 
     List<Staff> findByUnidadDeVenta_IdUnidadDeVenta(Long idUnidadDeVenta);
+
+    Optional<Staff> findByUser_Username(String username);
 }

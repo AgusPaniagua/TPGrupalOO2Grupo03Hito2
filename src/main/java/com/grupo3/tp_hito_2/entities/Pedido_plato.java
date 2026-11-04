@@ -27,6 +27,9 @@ public class Pedido_plato {
     @ToString.Include
     private double subTotal;
 
+    @ToString.Include
+    private int cantidad;
+
     // El nombre del campo debe ser "pedido": Pedido lo referencia con mappedBy = "pedido"
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "idPedido")
@@ -36,9 +39,10 @@ public class Pedido_plato {
     @JoinColumn(name = "idPlato")
     private Plato plato;
 
-    public Pedido_plato(Pedido pedido, Plato plato, double subTotal) {
+    public Pedido_plato(Pedido pedido, Plato plato, double subTotal,int cantidad) {
         this.pedido = pedido;
         this.plato = plato;
         this.subTotal = subTotal;
+        this.cantidad= cantidad;
     }
 }

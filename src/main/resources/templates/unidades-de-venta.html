@@ -1,8 +1,11 @@
+
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="~{layout :: head}"></head>
 
 <body class="admin-body">
+
 <nav th:replace="~{layout :: navbar}"></nav>
 
 <main class="admin-main">
@@ -16,17 +19,49 @@
             </p>
         </div>
 
-        <div class="card admin-card">
+        <div class="card admin-card admin-list-card">
             <div class="card-body">
 
-                <div th:if="${#lists.isEmpty(unidadesDeVenta)}">
+                <!-- Botón para consultar el reporte -->
+                <div class="mb-3">
+                    <button type="button"
+                            id="btnReporte"
+                            class="btn btn-pill">
+                        <i class="bi bi-cash-stack"></i>
+                        Ver reporte de recaudación
+                    </button>
+                </div>
+
+                <!-- Resultado del reporte -->
+                <div id="reporteRecaudacion"
+                     class="reporte-card mb-4 d-none">
+                    <div class="card-body">
+                        <h4>Reporte de Recaudación</h4>
+
+                        <p>
+                            Festival:
+                            <strong id="nombreFestivalReporte"></strong>
+                        </p>
+
+                        <h2 id="totalRecaudacion" class="text-success"></h2>
+
+                        <p class="text-muted mb-0">
+                            Recaudación total del festival
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Mensaje cuando no hay unidades -->
+                <div id="mensajeVacio"
+                     th:classappend="${!#lists.isEmpty(unidadesDeVenta)} ? 'd-none' : ''">
                     Este festival todavía no tiene unidades de venta.
                 </div>
 
+                <!-- Tabla de unidades -->
                 <div class="table-responsive"
                      th:unless="${#lists.isEmpty(unidadesDeVenta)}">
 
-                    <table class="table table-dark table-striped">
+                    <table class="table table-dark table-striped admin-list-table">
                         <thead>
                         <tr>
                             <th>ID</th>
@@ -48,8 +83,8 @@
 
                 </div>
 
-                <a th:href="@{/festivales}" class="btn btn-pill">
-                    Volver a festivales
+                <a th:href="@{/unidades-de-venta}" class="btn btn-pill">
+                    Volver
                 </a>
 
             </div>
@@ -59,5 +94,53 @@
 
 <footer th:replace="~{layout :: footer}"></footer>
 <div th:replace="~{layout :: scripts}"></div>
+
+<script th:inline="javascript">
+
+    const idFestival = /*[[${festival.idFestival}]]*/ 0;
+    const btnReporte = document.getElementById("btnReporte");
+    const reporte = document.getElementById("reporteRecaudacion");
+
+    btnReporte.addEventListener("click", async function () {
+
+        // Si el reporte ya está visible, lo ocultamos
+        if (!reporte.classList.contains("d-none")) {
+            reporte.classList.add("d-none");
+            return;
+        }
+
+        try {
+            const respuesta = await fetch(
+                `/api/festivales/${idFestival}/reporte-recaudacion`
+            );
+
+            if (!respuesta.ok) {
+                throw new Error("No se pudo obtener el reporte");
+            }
+
+            const datos = await respuesta.json();
+
+            document.getElementById("nombreFestivalReporte")
+                .textContent = datos.nombreFestival;
+
+            document.getElementById("totalRecaudacion")
+                .textContent = datos.recaudacionTotal.toLocaleString(
+                "es-AR",
+                {
+                    style: "currency",
+                    currency: "ARS"
+                }
+            );
+
+            reporte.classList.remove("d-none");
+
+        } catch (error) {
+            console.error(error);
+            alert("No se pudo cargar el reporte de recaudación.");
+        }
+    });
+
+</script>
+
 </body>
 </html>
