@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head}"></head>
+<body class="admin-body">
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="admin-main">
+    <div class="admin-container">
+
+        <div class="admin-hero">
+            <h1>Dónde trabajo hoy</h1>
+            <p th:text="${#temporals.format(#temporals.createToday(), 'dd/MM/yyyy')}"></p>
+        </div>
+
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <div class="card admin-card" th:if="${error == null}">
+            <div class="card-body">
+
+                <div th:if="${asignacion == null}">
+                    <h5 class="card-title">Sin asignación activa</h5>
+                    <p class="card-text mb-0">Hoy no tenés que trabajar en ningún festival activo.</p>
+                </div>
+
+                <div th:if="${asignacion != null}" class="text-left">
+                    <h5 class="card-title text-center">Hoy trabajás</h5>
+                    <p><strong>Festival:</strong> <span th:text="${asignacion.nombreFestival}"></span></p>
+                    <p><strong>Período:</strong>
+                        <span th:text="${#temporals.format(asignacion.fechaInicio, 'dd/MM/yyyy')} + ' al ' + ${#temporals.format(asignacion.fechaFin, 'dd/MM/yyyy')}"></span>
+                    </p>
+                    <p><strong>Unidad de venta:</strong> <span th:text="${asignacion.nombreUnidad}"></span></p>
+                    <p><strong>Código:</strong> <span th:text="${asignacion.codigoUnico}"></span></p>
+                    <p class="mb-0"><strong>Tipo de unidad:</strong> <span th:text="${asignacion.tipoUnidad}"></span></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-4">
+            <a th:href="@{/empleado/home}" class="btn btn-pill">Volver al panel</a>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>
