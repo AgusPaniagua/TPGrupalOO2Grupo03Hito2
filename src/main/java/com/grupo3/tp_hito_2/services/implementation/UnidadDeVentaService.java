@@ -56,6 +56,11 @@ public class UnidadDeVentaService implements IUnidadDeVentaService {
         this.festivalRepository=festivalRepository;
         this.staffRepository=staffRepository;
     }
+    
+    private UnidadDeVenta unidadDelResponsable(String userName) {
+        return unidadDeVentaRepository.findByResponsableUsername(userName).orElseThrow(
+                () -> new IllegalArgumentException("No tenes una unidad de venta asignada"));
+    }
 
     public List<UnidadDeVenta> getAll(){
         return unidadDeVentaRepository.findAll();
