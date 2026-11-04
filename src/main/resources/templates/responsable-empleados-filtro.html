@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{layout :: head}"></head>
+<body class="admin-body">
+<nav th:replace="~{layout :: navbar}"></nav>
+
+<main class="admin-main">
+    <div class="admin-container admin-form" style="max-width: 1100px;">
+
+        <div class="admin-hero">
+            <h1>Filtrar empleados</h1>
+            <p>Completá uno o varios campos. Solo se muestran los empleados activos (no dados de baja).</p>
+        </div>
+
+        <form method="get" th:action="@{/responsable/empleados/filtrar}" th:object="${filtro}" class="mb-4">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" class="form-control form-control-line" th:field="*{nombre}"/>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="apellido">Apellido</label>
+                    <input type="text" id="apellido" class="form-control form-control-line" th:field="*{apellido}"/>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="dni">DNI</label>
+                    <input type="number" id="dni" min="1" class="form-control form-control-line" th:field="*{dni}"/>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="tipo">Tipo de personal</label>
+                    <select id="tipo" class="form-control form-control-line" th:field="*{tipo}">
+                        <option value="">Todos</option>
+                        <option value="COCINERO">Cocinero</option>
+                        <option value="CAJERO">Cajero</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="turno">Turno (cajeros)</label>
+                    <input type="text" id="turno" placeholder="Mañana / Noche" class="form-control form-control-line" th:field="*{turno}"/>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="especialidad">Especialidad (cocina)</label>
+                    <input type="text" id="especialidad" class="form-control form-control-line" th:field="*{especialidad}"/>
+                </div>
+            </div>
+
+            <div class="form-row align-items-end">
+                <div class="form-group col-md-3">
+                    <label for="ingresoDesde">Ingreso desde</label>
+                    <input type="date" id="ingresoDesde" class="form-control form-control-line" th:field="*{ingresoDesde}"/>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="ingresoHasta">Ingreso hasta</label>
+                    <input type="date" id="ingresoHasta" class="form-control form-control-line" th:field="*{ingresoHasta}"/>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="antiguedadMinima">Antigüedad mínima (años)</label>
+                    <input type="number" id="antiguedadMinima" min="0" class="form-control form-control-line" th:field="*{antiguedadMinima}"/>
+                </div>
+                <div class="form-group col-md-3">
+                    <button type="submit" class="btn btn-pill">Buscar</button>
+                    <a th:href="@{/responsable/empleados/filtrar}" class="btn btn-pill">Limpiar</a>
+                </div>
+            </div>
+        </form>
+
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Apellido y nombre</th>
+                    <th>DNI</th>
+                    <th>Tipo</th>
+                    <th>Especialidad / Turno</th>
+                    <th>Ingreso</th>
+                    <th>Antigüedad</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="e : ${empleados}">
+                    <td th:text="${e.apellido + ', ' + e.nombre}"></td>
+                    <td th:text="${e.dni}"></td>
+                    <td th:text="${e.tipo}"></td>
+                    <td th:text="${e.detalle}"></td>
+                    <td th:text="${#temporals.format(e.fechaDeIngreso, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${e.antiguedad} + ' año(s)'"></td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(empleados)}">
+                    <td colspan="6" class="text-center">No hay empleados que coincidan con los filtros.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-4">
+            <a th:href="@{/responsable/home}" class="btn btn-pill">Volver al panel</a>
+        </div>
+    </div>
+</main>
+
+<footer th:replace="~{layout :: footer}"></footer>
+<div th:replace="~{layout :: scripts}"></div>
+</body>
+</html>
